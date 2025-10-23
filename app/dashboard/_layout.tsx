@@ -1,0 +1,56 @@
+import { Tabs } from "expo-router";
+import { Ionicons, MaterialIcons, FontAwesome5, Feather } from "@expo/vector-icons";
+
+export default function DashboardLayout() {
+    return (
+        <Tabs
+            screenOptions={{
+                headerShown: false,
+                tabBarActiveTintColor: "#D91339",
+                tabBarInactiveTintColor: "#555",
+                tabBarStyle: {
+                    backgroundColor: "#fff",
+                    borderTopWidth: 1,
+                    borderColor: "#eee",
+                    height: 60,
+                },
+            }}
+        >
+            <Tabs.Screen
+                name="index"
+                options={{
+                    title: "Dashboard",
+                    tabBarIcon: ({ color }) => <Ionicons name="home" size={22} color={color} />,
+                }}
+            />
+            <Tabs.Screen
+                name="orders"
+                options={{
+                    title: "My Orders",
+                    tabBarIcon: ({ color }) => <MaterialIcons name="shopping-bag" size={22} color={color} />,
+                }}
+            />
+            <Tabs.Screen
+                name="trexo-mall"
+                options={{
+                    title: "Trexo Mall",
+                    tabBarIcon: ({ color }) => <FontAwesome5 name="store" size={20} color={color} />,
+                }}
+            />
+            <Tabs.Screen
+                name="logistics"
+                options={{
+                    title: "Logistics",
+                    tabBarIcon: ({ color }) => <FontAwesome5 name="truck" size={22} color={color} />,
+                }}
+            />
+            <Tabs.Screen
+                name="profile"
+                options={{
+                    title: "Profile",
+                    tabBarIcon: ({ color }) => <Feather name="user" size={22} color={color} />,
+                }}
+            />
+        </Tabs>
+    );
+}
