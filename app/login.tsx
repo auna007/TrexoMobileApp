@@ -24,7 +24,7 @@ const Login = () => {
             return;
         }
 
-        router.push("/dashboard");
+        router.push("/(tabs)");
     };
 
     return (

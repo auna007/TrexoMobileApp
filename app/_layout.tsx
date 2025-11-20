@@ -1,19 +1,16 @@
+import { CartProvider } from "@/contexts/CartContext";
 import { Stack } from "expo-router";
 
 export default function RootLayout() {
     return (
-        <Stack
-            screenOptions={{
-                headerStyle: { backgroundColor: "#f4511e" },
-                headerTintColor: "#fff",
-                headerTitleStyle: { fontWeight: "bold" },
-            }}
-        >
-            <Stack.Screen name="splash" options={{ headerShown: false }} />
-            <Stack.Screen name="home" options={{ headerShown: false }} />
-            <Stack.Screen name="login" options={{ headerShown: false }} />
-            <Stack.Screen name="register" options={{ headerShown: false }} />
-            <Stack.Screen name="dashboard" options={{ headerShown: false }} />
-        </Stack>
+        <CartProvider>
+            <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="index" />
+                <Stack.Screen name="home" />
+                <Stack.Screen name="login" />
+                <Stack.Screen name="register" />
+                <Stack.Screen name="(tabs)" />
+            </Stack>
+        </CartProvider>
     );
 }
