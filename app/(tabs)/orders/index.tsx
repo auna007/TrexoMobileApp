@@ -8,23 +8,39 @@ import {
     StyleSheet,
 } from "react-native";
 import { Ionicons, MaterialIcons, Feather } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 const TABS = [
     { key: "Pending", icon: "time-outline" },
     { key: "To Ship", icon: "cube-outline" },
-    { key: "To Receive", icon: "truck-outline" },
+    { key: "To Receive", icon: "car-outline" },
     { key: "To Review", icon: "chatbubbles-outline" },
     { key: "Returns & Cancellations", icon: "return-down-back-outline" },
 ];
 
 const sampleOrders = [
-    { id: 1, name: "Smart Fan", date: "Oct 15, 2025", amount: "₦35,000", status: "Pending" },
-    { id: 2, name: "Bluetooth Headphones", date: "Oct 13, 2025", amount: "₦18,000", status: "Pending" },
-    { id: 3, name: "Portable Speaker", date: "Oct 12, 2025", amount: "₦22,000", status: "To Ship" },
-    { id: 4, name: "Smart Lamp", date: "Oct 11, 2025", amount: "₦15,500", status: "To Ship" },
-    { id: 5, name: "Air Purifier", date: "Oct 10, 2025", amount: "₦60,000", status: "To Receive" },
-    { id: 6, name: "Wireless Mouse", date: "Oct 9, 2025", amount: "₦9,000", status: "To Review" },
-    { id: 7, name: "Desk Organizer", date: "Oct 8, 2025", amount: "₦12,500", status: "Returns & Cancellations" },
+    { id: 1, name: "Samsung Galaxy S23 Ultra", date: "Oct 22, 2025", amount: "₦920,000", status: "Pending" },
+    { id: 2, name: "Bluetooth Earbuds", date: "Oct 20, 2025", amount: "₦18,000", status: "To Ship" },
+    { id: 3, name: "Gaming Keyboard", date: "Oct 18, 2025", amount: "₦30,000", status: "To Receive" },
+    { id: 4, name: "Nike Air Max 270", date: "Oct 17, 2025", amount: "₦75,000", status: "To Review" },
+    { id: 5, name: "HP Pavilion Laptop", date: "Oct 14, 2025", amount: "₦480,000", status: "Pending" },
+    { id: 6, name: "LED Ring Light", date: "Oct 12, 2025", amount: "₦15,000", status: "To Ship" },
+    { id: 7, name: "Backpack", date: "Oct 11, 2025", amount: "₦12,000", status: "To Receive" },
+    { id: 8, name: "Smart Watch", date: "Oct 9, 2025", amount: "₦45,000", status: "To Review" },
+    { id: 9, name: "Wireless Speaker", date: "Oct 8, 2025", amount: "₦25,000", status: "Completed" },
+    { id: 10, name: "Power Bank 30,000mAh", date: "Oct 6, 2025", amount: "₦20,000", status: "Returns & Cancellations" },
+    { id: 11, name: "Office Chair", date: "Oct 5, 2025", amount: "₦65,000", status: "Pending" },
+    { id: 12, name: "iPad Mini 6", date: "Oct 4, 2025", amount: "₦410,000", status: "Completed" },
+    { id: 13, name: "4K Android TV 55\"", date: "Oct 3, 2025", amount: "₦310,000", status: "Pending" },
+    { id: 14, name: "Smart Home Camera", date: "Oct 2, 2025", amount: "₦45,000", status: "To Ship" },
+    { id: 15, name: "Rechargeable Blender", date: "Oct 1, 2025", amount: "₦18,500", status: "To Receive" },
+    { id: 16, name: "Mechanical Gaming Mouse", date: "Sept 30, 2025", amount: "₦14,000", status: "To Review" },
+    { id: 17, name: "USB-C Fast Charger", date: "Sept 29, 2025", amount: "₦7,500", status: "Pending" },
+    { id: 18, name: "Electric Kettle", date: "Sept 29, 2025", amount: "₦10,500", status: "To Ship" },
+    { id: 19, name: "VR Headset", date: "Sept 28, 2025", amount: "₦150,000", status: "Returns & Cancellations" },
+    { id: 20, name: "Smart Air Fryer", date: "Sept 27, 2025", amount: "₦55,000", status: "To Receive" },
+    { id: 21, name: "Portable Solar Power Bank", date: "Sept 26, 2025", amount: "₦22,000", status: "To Review" },
+    { id: 22, name: "Laptop Backpack", date: "Sept 25, 2025", amount: "₦16,000", status: "Pending" },
 ];
 
 const Orders = () => {
@@ -103,7 +119,16 @@ const Orders = () => {
             >
                 {filteredOrders.length ? (
                     filteredOrders.map((order) => (
-                        <View key={order.id} style={styles.orderCard}>
+                        <TouchableOpacity
+                            key={order.id}
+                            style={styles.orderCard}
+                            onPress={() => {
+                                router.push({
+                                    pathname: "/order-detail/[id]",
+                                    params: { id: order.id.toString() },
+                                });
+                            }}
+                        >
                             <View style={styles.orderHeader}>
                                 <Text style={styles.orderName}>{order.name}</Text>
                                 <Text style={[styles.statusBadge, { backgroundColor: getStatusColor(order.status) + "22", borderColor: getStatusColor(order.status) }]}>
@@ -120,7 +145,7 @@ const Orders = () => {
                                     <Text style={styles.detailsText}>Details</Text>
                                 </TouchableOpacity>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     ))
                 ) : (
                     <View style={styles.emptyContainer}>
