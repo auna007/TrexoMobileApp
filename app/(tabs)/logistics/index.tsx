@@ -5,11 +5,21 @@ import {
     StyleSheet,
     TouchableOpacity,
     ScrollView,
+    Modal,
+    TextInput,
+    TouchableWithoutFeedback,
+    Keyboard,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 const Logistics = () => {
     const [activeTab, setActiveTab] = useState<"local" | "foreign">("local");
+    const [modalVisible, setModalVisible] = useState(false);
+    const [fullName, setFullName] = useState("");
+    const [phone, setPhone] = useState("");
+    const [trackingId, setTrackingId] = useState("");
+    const [warehouse, setWarehouse] = useState("");
+    const [shippingType, setShippingType] = useState("");
 
     const localData = [
         {
@@ -90,48 +100,29 @@ const Logistics = () => {
 
             <View style={styles.tabContainer}>
                 <TouchableOpacity
-                    style={[
-                        styles.tab,
-                        activeTab === "local" && styles.activeTab,
-                    ]}
+                    style={[styles.tab, activeTab === "local" && styles.activeTab]}
                     onPress={() => setActiveTab("local")}
                 >
                     <Text
-                        style={[
-                            styles.tabText,
-                            activeTab === "local" && styles.activeTabText,
-                        ]}
+                        style={[styles.tabText, activeTab === "local" && styles.activeTabText]}
                     >
                         Local Logistics
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={[
-                        styles.tab,
-                        activeTab === "foreign" && styles.activeTab,
-                    ]}
+                    style={[styles.tab, activeTab === "foreign" && styles.activeTab]}
                     onPress={() => setActiveTab("foreign")}
                 >
                     <Text
-                        style={[
-                            styles.tabText,
-                            activeTab === "foreign" && styles.activeTabText,
-                        ]}
+                        style={[styles.tabText, activeTab === "foreign" && styles.activeTabText]}
                     >
                         Foreign Logistics
                     </Text>
                 </TouchableOpacity>
             </View>
 
-            <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={{ marginTop: 10 }}
-            >
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ paddingBottom: 100 }}
-                >
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
+                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
                     <View style={[styles.tableRow, styles.tableHeaderRow]}>
                         {tableHeaders.map((header, index) => (
                             <Text key={index} style={[styles.cell, styles.headerCell]}>
@@ -163,9 +154,7 @@ const Logistics = () => {
                             <Text
                                 style={[
                                     styles.cell,
-                                    item.payment === "Paid"
-                                        ? styles.paid
-                                        : styles.unpaid,
+                                    item.payment === "Paid" ? styles.paid : styles.unpaid,
                                 ]}
                             >
                                 {item.payment}
@@ -175,6 +164,78 @@ const Logistics = () => {
                     ))}
                 </ScrollView>
             </ScrollView>
+
+            <TouchableOpacity
+                style={styles.fab}
+                onPress={() => setModalVisible(true)}
+            >
+                <Ionicons name="add" size={32} color="#fff" />
+            </TouchableOpacity>
+
+            <Modal transparent visible={modalVisible} animationType="slide">
+                <TouchableWithoutFeedback onPress={() => { setModalVisible(false); Keyboard.dismiss(); }}>
+                    <View style={styles.modalOverlay}>
+                        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                            <View style={styles.modalBox}>
+                                <Text style={styles.modalTitle}>Create Delivery Request</Text>
+
+                                <Text style={styles.label}>Full Name</Text>
+                                <TextInput
+                                    value={fullName}
+                                    onChangeText={setFullName}
+                                    style={styles.input}
+                                />
+
+                                <Text style={styles.label}>Phone Number</Text>
+                                <TextInput
+                                    value={phone}
+                                    onChangeText={setPhone}
+                                    style={styles.input}
+                                    keyboardType="phone-pad"
+                                />
+
+                                <Text style={styles.label}>Tracking ID</Text>
+                                <TextInput
+                                    value={trackingId}
+                                    onChangeText={setTrackingId}
+                                    style={styles.input}
+                                />
+
+                                <Text style={styles.label}>Select Warehouse</Text>
+                                <TextInput
+                                    value={warehouse}
+                                    onChangeText={setWarehouse}
+                                    style={styles.input}
+                                />
+
+                                {activeTab === "foreign" && (
+                                    <>
+                                        <Text style={styles.label}>Shipping Type</Text>
+                                        <TextInput
+                                            value={shippingType}
+                                            onChangeText={setShippingType}
+                                            style={styles.input}
+                                        />
+                                    </>
+                                )}
+
+                                <View style={styles.modalBtnRow}>
+                                    <TouchableOpacity
+                                        style={styles.cancelBtn}
+                                        onPress={() => setModalVisible(false)}
+                                    >
+                                        <Text style={styles.cancelText}>Cancel</Text>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity style={styles.submitBtn}>
+                                        <Text style={styles.submitText}>Submit</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </View>
+                </TouchableWithoutFeedback>
+            </Modal>
         </View>
     );
 };
@@ -270,6 +331,75 @@ const styles = StyleSheet.create({
     unpaid: {
         color: "red",
         fontWeight: "600",
+    },
+    fab: {
+        position: "absolute",
+        bottom: 30,
+        right: 30,
+        backgroundColor: "#D91339",
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        alignItems: "center",
+        justifyContent: "center",
+        elevation: 5,
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: "rgba(0,0,0,0.5)",
+        justifyContent: "center",
+        padding: 20,
+    },
+    modalBox: {
+        backgroundColor: "#fff",
+        borderRadius: 12,
+        padding: 20,
+    },
+    modalTitle: {
+        fontSize: 18,
+        fontWeight: "700",
+        marginBottom: 15,
+        color: "#D91339",
+    },
+    label: {
+        fontSize: 14,
+        fontWeight: "600",
+        marginBottom: 6,
+        marginTop: 4,
+        color: "#444",
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderRadius: 8,
+        padding: 12,
+        fontSize: 14,
+        marginBottom: 12,
+    },
+    modalBtnRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: 10,
+    },
+    cancelBtn: {
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderRadius: 8,
+        backgroundColor: "#ddd",
+    },
+    cancelText: {
+        color: "#333",
+        fontWeight: "600",
+    },
+    submitBtn: {
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderRadius: 8,
+        backgroundColor: "#D91339",
+    },
+    submitText: {
+        color: "#fff",
+        fontWeight: "700",
     },
 });
 
