@@ -73,8 +73,16 @@ export default function Cart() {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 20, paddingTop: 60 },
-    header: { fontSize: 24, fontWeight: "bold", marginBottom: 20 },
+    container: {
+        flex: 1,
+        padding: 20,
+        paddingTop: 60
+    },
+    header: {
+        fontSize: 24,
+        fontWeight: "bold",
+        marginBottom: 20
+    },
     row: {
         flexDirection: "row",
         backgroundColor: "#fff",
@@ -84,10 +92,25 @@ const styles = StyleSheet.create({
         alignItems: "center",
         elevation: 3,
     },
-    image: { width: 70, height: 70, marginRight: 15, borderRadius: 10 },
-    name: { fontWeight: "600", fontSize: 16 },
-    price: { color: "#D91339", marginTop: 3, fontWeight: "500" },
-    remove: { color: "red", marginLeft: "auto" },
+    image: {
+        width: 70,
+        height: 70,
+        marginRight: 15,
+        borderRadius: 10
+    },
+    name: {
+        fontWeight: "600",
+        fontSize: 16
+    },
+    price: {
+        color: "#D91339",
+        marginTop: 3,
+        fontWeight: "500"
+    },
+    remove: {
+        color: "red",
+        marginLeft: "auto"
+    },
     quantityContainer: {
         flexDirection: "row",
         alignItems: "center",
@@ -103,9 +126,19 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    emptyText: { fontSize: 20, color: "#aaa", marginTop: 10 },
-    summary: { marginTop: 20 },
-    total: { fontSize: 18, fontWeight: "bold", marginBottom: 10 },
+    emptyText: {
+        fontSize: 20,
+        color: "#aaa",
+        marginTop: 10
+    },
+    summary: {
+        marginTop: 20
+    },
+    total: {
+        fontSize: 18,
+        fontWeight: "bold",
+        marginBottom: 10
+    },
     clear: {
         backgroundColor: "#ccc",
         padding: 12,

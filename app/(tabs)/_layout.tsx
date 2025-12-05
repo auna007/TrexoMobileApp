@@ -1,7 +1,10 @@
 import { Tabs } from "expo-router";
 import { Ionicons, MaterialIcons, FontAwesome5, Feather } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function DashboardLayout() {
+    const insets = useSafeAreaInsets();
+
     return (
         <Tabs
             screenOptions={{
@@ -12,7 +15,8 @@ export default function DashboardLayout() {
                     backgroundColor: "#fff",
                     borderTopWidth: 1,
                     borderColor: "#eee",
-                    height: 60,
+                    height: 50 + insets.bottom,
+                    paddingBottom: insets.bottom,
                 },
             }}
         >
@@ -20,35 +24,49 @@ export default function DashboardLayout() {
                 name="index"
                 options={{
                     title: "Dashboard",
-                    tabBarIcon: ({ color }) => <Ionicons name="home" size={22} color={color} />,
+                    tabBarIcon: ({ color }) => (
+                        <Ionicons name="home" size={22} color={color} />
+                    ),
                 }}
             />
+
             <Tabs.Screen
                 name="orders/index"
                 options={{
                     title: "My Orders",
-                    tabBarIcon: ({ color }) => <MaterialIcons name="shopping-bag" size={22} color={color} />,
+                    tabBarIcon: ({ color }) => (
+                        <MaterialIcons name="shopping-bag" size={22} color={color} />
+                    ),
                 }}
             />
+
             <Tabs.Screen
                 name="trexo-mall/index"
                 options={{
                     title: "Trexo Mall",
-                    tabBarIcon: ({ color }) => <FontAwesome5 name="store" size={20} color={color} />,
+                    tabBarIcon: ({ color }) => (
+                        <FontAwesome5 name="store" size={20} color={color} />
+                    ),
                 }}
             />
+
             <Tabs.Screen
                 name="logistics/index"
                 options={{
                     title: "Logistics",
-                    tabBarIcon: ({ color }) => <FontAwesome5 name="truck" size={22} color={color} />,
+                    tabBarIcon: ({ color }) => (
+                        <FontAwesome5 name="truck" size={22} color={color} />
+                    ),
                 }}
             />
+
             <Tabs.Screen
                 name="profile/index"
                 options={{
                     title: "Profile",
-                    tabBarIcon: ({ color }) => <Feather name="user" size={22} color={color} />,
+                    tabBarIcon: ({ color }) => (
+                        <Feather name="user" size={22} color={color} />
+                    ),
                 }}
             />
         </Tabs>
