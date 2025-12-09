@@ -1,16 +1,16 @@
+import { Feather, Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
-    View,
-    Text,
-    TouchableOpacity,
+    Keyboard,
+    Modal,
     ScrollView,
     StyleSheet,
-    Modal,
+    Text,
     TextInput,
+    TouchableOpacity,
     TouchableWithoutFeedback,
-    Keyboard,
+    View,
 } from "react-native";
-import { Ionicons, Feather } from "@expo/vector-icons";
 
 const Addresses = () => {
     const [modalVisible, setModalVisible] = useState(false);

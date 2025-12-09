@@ -1,14 +1,15 @@
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
-import HeaderAuth from "./components/home/HeaderAuth";
-import SearchBar from "./components/home/SearchBar";
-import SectionTitle from "./components/home/SectionTitle";
-import ProductGrid from "./components/home/ProductGrid";
-import SellerList from "./components/home/SellerList";
-import TrackingSection from "./components/home/TrackingSection";
+import { SafeAreaView } from "react-native-safe-area-context";
 import CTASection from "./components/home/CTASection";
 import DealBanner from "./components/home/DealBanner";
+import HeaderAuth from "./components/home/HeaderAuth";
 import HeroCarousel from "./components/home/HeroCarousel";
+import ProductGrid from "./components/home/ProductGrid";
+import SearchBar from "./components/home/SearchBar";
+import SectionTitle from "./components/home/SectionTitle";
+import SellerList from "./components/home/SellerList";
+import TrackingSection from "./components/home/TrackingSection";
 
 const Home = () => {
     const newProducts = [
@@ -104,21 +105,23 @@ const Home = () => {
     ];
 
     return (
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-            <HeaderAuth />
-            <HeroCarousel />
-            <DealBanner />
-            <SearchBar placeholder="Search for products, brands, or sellers..." />
-            <SectionTitle title="New Arrivals" />
-            <ProductGrid products={newProducts} />
-            <SectionTitle title="Top Verified Sellers" />
-            <SellerList sellers={sellers} />
-            <SectionTitle title="Track Your Goods" />
-            <TrackingSection />
-            <SectionTitle title="Trending Now" />
-            <ProductGrid products={trendingProducts} />
-            <CTASection />
-        </ScrollView>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
+            <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+                <HeaderAuth />
+                <HeroCarousel />
+                <DealBanner />
+                <SearchBar placeholder="Search for products, brands, or sellers..." />
+                <SectionTitle title="New Arrivals" />
+                <ProductGrid products={newProducts} />
+                <SectionTitle title="Top Verified Sellers" />
+                <SellerList sellers={sellers} />
+                <SectionTitle title="Track Your Goods" />
+                <TrackingSection />
+                <SectionTitle title="Trending Now" />
+                <ProductGrid products={trendingProducts} />
+                <CTASection />
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 
@@ -126,7 +129,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#fff",
-        padding: 16,
+        paddingInline: 16,
     },
 });
 
