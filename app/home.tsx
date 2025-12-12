@@ -1,5 +1,6 @@
-import React from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { useProducts } from "@/hooks/useProducts";
+import React, { useCallback, useState } from "react";
+import { RefreshControl, ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CTASection from "./components/home/CTASection";
 import DealBanner from "./components/home/DealBanner";
@@ -12,6 +13,22 @@ import SellerList from "./components/home/SellerList";
 import TrackingSection from "./components/home/TrackingSection";
 
 const Home = () => {
+    const [refreshing, setRefreshing] = useState(false);
+    const { 
+        data: products, 
+        isLoading, 
+        error, 
+        refetch 
+    } = useProducts({
+        limit: 10,
+        sort: 'newest'
+    });
+
+    const onRefresh = useCallback(async () => {
+        setRefreshing(true);
+        await refetch();
+        setRefreshing(false);
+    }, [refetch]);
     const newProducts = [
         {
             id: 1,
@@ -106,7 +123,13 @@ const Home = () => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#000" }}>
-            <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+            <ScrollView 
+                style={styles.container} 
+                showsVerticalScrollIndicator={false}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
+            >
                 <HeaderAuth />
                 <HeroCarousel />
                 <DealBanner />

@@ -1,16 +1,18 @@
-import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "expo-router";
+import { useState } from "react";
 import {
-    View,
+    ActivityIndicator,
+    Alert,
+    Image,
+    Keyboard,
+    ScrollView,
+    StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
-    StyleSheet,
     TouchableWithoutFeedback,
-    Keyboard,
-    Image,
-    ScrollView,
-    Alert,
+    View,
 } from "react-native";
 
 const Register = () => {
@@ -19,6 +21,7 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const router = useRouter();
+    const { register, registerLoading } = useAuth();
 
     const handleRegister = () => {
         if (!name || !email || !password || !confirmPassword) {
@@ -31,7 +34,14 @@ const Register = () => {
             return;
         }
 
-        router.push("/login");
+        // Email format validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            Alert.alert("Error", "Please enter a valid email address");
+            return;
+        }
+
+        register({ name, email, password, confirm_password: confirmPassword });
     };
 
     return (
@@ -92,8 +102,20 @@ const Register = () => {
                     onChangeText={setConfirmPassword}
                 />
 
-                <TouchableOpacity style={styles.button} onPress={handleRegister}>
+                <TouchableOpacity
+                style={[
+                    styles.button,
+                    registerLoading && styles.buttonDisabled
+                ]}
+                onPress={handleRegister}
+                disabled={registerLoading}
+                activeOpacity={0.8}
+                >
+                {registerLoading ? (
+                    <ActivityIndicator color="#FFFFFF" size="small" />
+                ) : (
                     <Text style={styles.buttonText}>Sign Up</Text>
+                )}
                 </TouchableOpacity>
 
                 <View style={styles.dividerContainer}>
@@ -170,6 +192,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 10,
     },
+    buttonDisabled: {
+        backgroundColor: "#9CA3AF",
+        opacity: 0.7,
+      },
     buttonText: {
         color: "#fff",
         fontSize: 16,

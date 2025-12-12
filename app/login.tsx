@@ -1,22 +1,25 @@
-import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "expo-router";
+import { useState } from "react";
 import {
-    View,
+    ActivityIndicator,
+    Alert,
+    Image,
+    Keyboard,
+    ScrollView,
+    StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
-    StyleSheet,
     TouchableWithoutFeedback,
-    Keyboard,
-    Image,
-    ScrollView,
-    Alert,
+    View,
 } from "react-native";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter();
+    const { login, loginLoading } = useAuth();
 
     const handleLogin = () => {
         if (!email || !password) {
@@ -24,7 +27,7 @@ const Login = () => {
             return;
         }
 
-        router.push("/(tabs)");
+        login({ email, password });
     };
 
     return (
@@ -68,8 +71,20 @@ const Login = () => {
                     onChangeText={setPassword}
                 />
 
-                <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                <TouchableOpacity
+                style={[
+                    styles.button,
+                    loginLoading && styles.buttonDisabled
+                ]}
+                onPress={handleLogin}
+                disabled={loginLoading}
+                activeOpacity={0.8}
+                >
+                {loginLoading ? (
+                    <ActivityIndicator color="#FFFFFF" size="small" />
+                ) : (
                     <Text style={styles.buttonText}>Login</Text>
+                )}
                 </TouchableOpacity>
 
                 <View style={styles.dividerContainer}>
@@ -78,7 +93,15 @@ const Login = () => {
                     <View style={styles.divider} />
                 </View>
 
-                <TouchableOpacity style={styles.googleButton}>
+                <TouchableOpacity 
+                    style={[
+                        styles.googleButton,
+                        loginLoading && styles.buttonDisabled
+                    ]}
+                    disabled={loginLoading}
+                    activeOpacity={0.8}
+        
+                >
                     <Image
                         source={{
                             uri: "https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg",
@@ -145,6 +168,10 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignItems: "center",
         marginTop: 10,
+    },
+    buttonDisabled: {
+        backgroundColor: "#9CA3AF",
+        opacity: 0.7,
     },
     buttonText: {
         color: "#fff",
