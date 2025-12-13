@@ -159,6 +159,7 @@ export default ProductDetail;
 const styles = StyleSheet.create({
     container: {
         paddingTop: 40,
+        marginTop: 10,
         paddingHorizontal: 20,
         paddingBottom: 40,
         backgroundColor: "#f7f7f7",

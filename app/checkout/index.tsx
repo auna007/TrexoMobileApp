@@ -257,7 +257,7 @@ export default function CheckoutScreen() {
 }
 
 const styles = StyleSheet.create({
-    header: { fontSize: 28, fontWeight: "bold", marginBottom: 20, color: "#D91339" },
+    header: { fontSize: 28, fontWeight: "bold", marginBottom: 20, color: "#D91339", marginTop: 20, },
     card: {
         backgroundColor: "#fff",
         borderRadius: 12,
