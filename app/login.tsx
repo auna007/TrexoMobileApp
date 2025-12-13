@@ -72,6 +72,16 @@ const Login = () => {
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
 
+                <Text style={styles.termsText}>
+                    By logging in, you agree to our{" "}
+                    <Text
+                        style={styles.termsLink}
+                        onPress={() => router.push("/terms")}
+                    >
+                        Terms and Conditions
+                    </Text>
+                </Text>
+
                 <View style={styles.dividerContainer}>
                     <View style={styles.divider} />
                     <Text style={styles.dividerText}>Or</Text>
@@ -149,6 +159,16 @@ const styles = StyleSheet.create({
     buttonText: {
         color: "#fff",
         fontSize: 16,
+        fontWeight: "bold",
+    },
+    termsText: {
+        color: "#9CA3AF",
+        fontSize: 13,
+        textAlign: "center",
+        marginVertical: 15,
+    },
+    termsLink: {
+        color: "#ffc0cb",
         fontWeight: "bold",
     },
     dividerContainer: {

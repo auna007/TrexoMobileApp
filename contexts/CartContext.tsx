@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type Product = {
-    id: number;
+    id: string;
     image: any;
     name: string;
     price: string;
@@ -12,10 +12,10 @@ export type Product = {
 type CartContextType = {
     cart: Product[];
     addToCart: (product: Product) => void;
-    removeFromCart: (id: number) => void;
+    removeFromCart: (id: string) => void;
     clearCart: () => void;
-    increaseQuantity: (id: number) => void;
-    decreaseQuantity: (id: number) => void;
+    increaseQuantity: (id: string) => void;
+    decreaseQuantity: (id: string) => void;
 };
 
 const CartContext = createContext<CartContextType | null>(null);
@@ -46,19 +46,19 @@ export const CartProvider = ({ children }: any) => {
         });
     };
 
-    const removeFromCart = (id: number) => {
+    const removeFromCart = (id: string) => {
         setCart((prev) => prev.filter((p) => p.id !== id));
     };
 
     const clearCart = () => setCart([]);
 
-    const increaseQuantity = (id: number) => {
+    const increaseQuantity = (id: string) => {
         setCart((prev) =>
             prev.map((p) => (p.id === id ? { ...p, quantity: (p.quantity || 1) + 1 } : p))
         );
     };
 
-    const decreaseQuantity = (id: number) => {
+    const decreaseQuantity = (id: string) => {
         setCart((prev) =>
             prev
                 .map((p) => (p.id === id ? { ...p, quantity: (p.quantity || 1) - 1 } : p))

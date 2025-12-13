@@ -1,10 +1,24 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    TouchableOpacity,
+    ImageSourcePropType
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useCart, Product } from "@/contexts/CartContext";
+import { useCart } from "@/contexts/CartContext";
 import { useRouter } from "expo-router";
 
-export default function ProductGrid({ item }: { item: Product }) {
+type GridProduct = {
+    id: number;
+    name: string;
+    price: string;
+    image: ImageSourcePropType;
+};
+
+export default function ProductGrid({ item }: { item: GridProduct }) {
     const { addToCart } = useCart();
     const router = useRouter();
 
@@ -22,7 +36,10 @@ export default function ProductGrid({ item }: { item: Product }) {
             <Text style={styles.price}>{item.price}</Text>
 
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.addBtn} onPress={() => addToCart(item)}>
+                <TouchableOpacity
+                    style={styles.addBtn}
+                    onPress={() => addToCart(item as any)}
+                >
                     <Ionicons name="cart-outline" size={18} color="#fff" />
                     <Text style={styles.addText}>Add to Cart</Text>
                 </TouchableOpacity>

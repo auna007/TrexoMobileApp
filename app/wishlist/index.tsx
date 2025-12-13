@@ -65,7 +65,7 @@ const Wishlist = () => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 60, // Top padding for status bar
+        paddingTop: 60,
         paddingHorizontal: 20,
         backgroundColor: "#f8f8f8",
         paddingBottom: 40,
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     actions: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "flex-start",
+        flexWrap: "wrap",
         gap: 12,
     },
     moveBtn: {

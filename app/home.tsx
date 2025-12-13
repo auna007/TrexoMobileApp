@@ -1,5 +1,6 @@
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderAuth from "./components/home/HeaderAuth";
 import SearchBar from "./components/home/SearchBar";
 import SectionTitle from "./components/home/SectionTitle";
@@ -104,28 +105,33 @@ const Home = () => {
     ];
 
     return (
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-            <HeaderAuth />
-            <HeroCarousel />
-            <DealBanner />
-            <SearchBar placeholder="Search for products, brands, or sellers..." />
-            <SectionTitle title="New Arrivals" />
-            <ProductGrid products={newProducts} />
-            <SectionTitle title="Top Verified Sellers" />
-            <SellerList sellers={sellers} />
-            <SectionTitle title="Track Your Goods" />
-            <TrackingSection />
-            <SectionTitle title="Trending Now" />
-            <ProductGrid products={trendingProducts} />
-            <CTASection />
-        </ScrollView>
+        <SafeAreaView style={styles.safeArea}>
+            <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+                <HeaderAuth />
+                <HeroCarousel />
+                <DealBanner />
+                <SearchBar placeholder="Search for products, brands, or sellers..." />
+                <SectionTitle title="New Arrivals" />
+                <ProductGrid products={newProducts} />
+                <SectionTitle title="Top Verified Sellers" />
+                <SellerList sellers={sellers} />
+                <SectionTitle title="Track Your Goods" />
+                <TrackingSection />
+                <SectionTitle title="Trending Now" />
+                <ProductGrid products={trendingProducts} />
+                <CTASection />
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    safeArea: {
         flex: 1,
         backgroundColor: "#fff",
+    },
+    container: {
+        flex: 1,
         padding: 16,
     },
 });
