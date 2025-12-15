@@ -13,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useCart } from "@/contexts/CartContext";
 import { products } from "@/data/products";
+import ThemedView from "../components/ThemedView";
 
 const { width } = Dimensions.get("window");
 
@@ -53,104 +54,106 @@ const ProductDetail: React.FC = () => {
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <View style={styles.topBar}>
-                <TouchableOpacity onPress={() => router.back()}>
-                    <Ionicons name="arrow-back" size={28} color="#333" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.push("/cart")} style={styles.cartBtn}>
-                    <Ionicons name="cart-outline" size={28} color="#fff" />
-                </TouchableOpacity>
-            </View>
+        <ThemedView>
+            <ScrollView contentContainerStyle={styles.container}>
+                <View style={styles.topBar}>
+                    <TouchableOpacity onPress={() => router.back()}>
+                        <Ionicons name="arrow-back" size={28} color="#333" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => router.push("/cart")} style={styles.cartBtn}>
+                        <Ionicons name="cart-outline" size={28} color="#fff" />
+                    </TouchableOpacity>
+                </View>
 
-            <ScrollView
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                onMomentumScrollEnd={e => {
-                    const index = Math.round(e.nativeEvent.contentOffset.x / width);
-                    setActiveImageIndex(index);
-                }}
-            >
-                {product.images.map((img, idx) => (
-                    <Image
-                        key={idx}
-                        source={img}
-                        style={[styles.image, { width: width - 40 }]}
-                    />
-                ))}
-            </ScrollView>
-
-            <View style={styles.imageIndicatorContainer}>
-                {product.images.map((_, i) => (
-                    <View
-                        key={i}
-                        style={[
-                            styles.imageIndicator,
-                            i === activeImageIndex && styles.activeImageIndicator,
-                        ]}
-                    />
-                ))}
-            </View>
-
-            <View style={styles.infoContainer}>
-                <Text style={styles.title}>{product.name}</Text>
-
-                <View style={styles.ratingContainer}>
-                    {[1, 2, 3, 4, 5].map(i => (
-                        <Ionicons
-                            key={i}
-                            name={i <= Math.round(product.rating) ? "star" : "star-outline"}
-                            size={18}
-                            color="#D91339"
+                <ScrollView
+                    horizontal
+                    pagingEnabled
+                    showsHorizontalScrollIndicator={false}
+                    onMomentumScrollEnd={e => {
+                        const index = Math.round(e.nativeEvent.contentOffset.x / width);
+                        setActiveImageIndex(index);
+                    }}
+                >
+                    {product.images.map((img, idx) => (
+                        <Image
+                            key={idx}
+                            source={img}
+                            style={[styles.image, { width: width - 40 }]}
                         />
                     ))}
-                    <Text style={styles.stockText}>{product.stock} in stock</Text>
+                </ScrollView>
+
+                <View style={styles.imageIndicatorContainer}>
+                    {product.images.map((_, i) => (
+                        <View
+                            key={i}
+                            style={[
+                                styles.imageIndicator,
+                                i === activeImageIndex && styles.activeImageIndicator,
+                            ]}
+                        />
+                    ))}
                 </View>
 
-                <View style={styles.priceContainer}>
-                    {product.discount ? (
-                        <Text style={styles.oldPrice}>₦{product.price.toFixed(2)}</Text>
-                    ) : null}
-                    <Text style={styles.price}>₦{discountedPrice}</Text>
-                    {product.discount ? (
-                        <View style={styles.discountBadge}>
-                            <Text style={styles.discountText}>-{product.discount}%</Text>
-                        </View>
-                    ) : null}
+                <View style={styles.infoContainer}>
+                    <Text style={styles.title}>{product.name}</Text>
+
+                    <View style={styles.ratingContainer}>
+                        {[1, 2, 3, 4, 5].map(i => (
+                            <Ionicons
+                                key={i}
+                                name={i <= Math.round(product.rating) ? "star" : "star-outline"}
+                                size={18}
+                                color="#D91339"
+                            />
+                        ))}
+                        <Text style={styles.stockText}>{product.stock} in stock</Text>
+                    </View>
+
+                    <View style={styles.priceContainer}>
+                        {product.discount ? (
+                            <Text style={styles.oldPrice}>₦{product.price.toFixed(2)}</Text>
+                        ) : null}
+                        <Text style={styles.price}>₦{discountedPrice}</Text>
+                        {product.discount ? (
+                            <View style={styles.discountBadge}>
+                                <Text style={styles.discountText}>-{product.discount}%</Text>
+                            </View>
+                        ) : null}
+                    </View>
                 </View>
-            </View>
 
-            <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>Description</Text>
-                <Text style={styles.description}>{product.description}</Text>
-            </View>
+                <View style={styles.sectionContainer}>
+                    <Text style={styles.sectionTitle}>Description</Text>
+                    <Text style={styles.description}>{product.description}</Text>
+                </View>
 
-            <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>Specifications</Text>
-                <Text>Category: {product.category}</Text>
-                <Text>SKU: {product.sku}</Text>
-                <Text>Weight: {product.weight}kg</Text>
-                <Text>
-                    Dimensions: {product.dimensions.width} × {product.dimensions.height} ×{" "}
-                    {product.dimensions.depth} cm
-                </Text>
-            </View>
+                <View style={styles.sectionContainer}>
+                    <Text style={styles.sectionTitle}>Specifications</Text>
+                    <Text>Category: {product.category}</Text>
+                    <Text>SKU: {product.sku}</Text>
+                    <Text>Weight: {product.weight}kg</Text>
+                    <Text>
+                        Dimensions: {product.dimensions.width} × {product.dimensions.height} ×{" "}
+                        {product.dimensions.depth} cm
+                    </Text>
+                </View>
 
-            <View style={styles.quantityContainer}>
-                <TouchableOpacity onPress={decreaseQuantity} style={styles.qtyBtn}>
-                    <Ionicons name="remove-outline" size={28} color="#D91339" />
+                <View style={styles.quantityContainer}>
+                    <TouchableOpacity onPress={decreaseQuantity} style={styles.qtyBtn}>
+                        <Ionicons name="remove-outline" size={28} color="#D91339" />
+                    </TouchableOpacity>
+                    <Text style={styles.quantity}>{quantity}</Text>
+                    <TouchableOpacity onPress={increaseQuantity} style={styles.qtyBtn}>
+                        <Ionicons name="add-outline" size={28} color="#D91339" />
+                    </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity style={styles.addToCartButton} onPress={handleAddToCart}>
+                    <Text style={styles.addToCartText}>Add to Cart</Text>
                 </TouchableOpacity>
-                <Text style={styles.quantity}>{quantity}</Text>
-                <TouchableOpacity onPress={increaseQuantity} style={styles.qtyBtn}>
-                    <Ionicons name="add-outline" size={28} color="#D91339" />
-                </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity style={styles.addToCartButton} onPress={handleAddToCart}>
-                <Text style={styles.addToCartText}>Add to Cart</Text>
-            </TouchableOpacity>
-        </ScrollView>
+            </ScrollView>
+        </ThemedView>
     );
 };
 
@@ -158,7 +161,7 @@ export default ProductDetail;
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 40,
+        paddingTop: 20,
         marginTop: 10,
         paddingHorizontal: 20,
         paddingBottom: 40,

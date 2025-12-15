@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { Ionicons, MaterialIcons, Feather, FontAwesome5 } from "@expo/vector-icons";
+import ThemedView from "../components/ThemedView";
 
 type Product = {
     id: number;
@@ -61,7 +62,7 @@ const CategoryProducts = () => {
     }, [activeCategory]);
 
     return (
-        <>
+        <ThemedView>
             <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 80 }}>
                 <View style={styles.headerRow}>
                     <Text style={styles.title}>{activeCategory}</Text>
@@ -131,12 +132,12 @@ const CategoryProducts = () => {
                     </View>
                 </View>
             </Modal>
-        </>
+        </ThemedView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { backgroundColor: "#fafafa", paddingHorizontal: 20, paddingTop: 60 },
+    container: { backgroundColor: "#fafafa", paddingHorizontal: 20, paddingTop: 20 },
     headerRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 20 },
     title: { fontSize: 26, fontWeight: "700", color: "#111", width: "70%" },
     changeBtn: { flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "#ffe8eb", paddingVertical: 7, paddingHorizontal: 14, borderRadius: 10 },

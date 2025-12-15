@@ -12,6 +12,7 @@ import {
     Keyboard,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import ThemedView from "../components/ThemedView";
 
 const currencies = ["USD", "EUR", "GBP", "NGN", "KES", "GHS", "CAD"];
 
@@ -62,69 +63,70 @@ const CurrencyConverter = () => {
     };
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.container}>
-                <Text style={styles.title}>Currency Converter</Text>
+        <ThemedView>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View style={styles.container}>
+                    <Text style={styles.title}>Currency Converter</Text>
 
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter amount"
-                    placeholderTextColor="#6B7280"
-                    keyboardType="numeric"
-                    value={amount}
-                    onChangeText={setAmount}
-                />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Enter amount"
+                        placeholderTextColor="#6B7280"
+                        keyboardType="numeric"
+                        value={amount}
+                        onChangeText={setAmount}
+                    />
 
-                <View style={styles.row}>
-                    <TouchableOpacity style={styles.pickerBox} onPress={() => setPickerVisible("from")}>
-                        <Text style={styles.label}>From</Text>
-                        <Text style={styles.pickerText}>{from}</Text>
+                    <View style={styles.row}>
+                        <TouchableOpacity style={styles.pickerBox} onPress={() => setPickerVisible("from")}>
+                            <Text style={styles.label}>From</Text>
+                            <Text style={styles.pickerText}>{from}</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.swap} onPress={swapCurrencies}>
+                            <Ionicons name="swap-vertical" size={24} color="#fff" />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.pickerBox} onPress={() => setPickerVisible("to")}>
+                            <Text style={styles.label}>To</Text>
+                            <Text style={styles.pickerText}>{to}</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <TouchableOpacity style={styles.button} onPress={convert}>
+                        <Text style={styles.buttonText}>Convert</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.swap} onPress={swapCurrencies}>
-                        <Ionicons name="swap-vertical" size={24} color="#fff" />
-                    </TouchableOpacity>
+                    {converted && (
+                        <Animated.View style={{ opacity: fade, marginTop: 25 }}>
+                            <Text style={styles.resultText}>
+                                {amount} {from} = {converted} {to}
+                            </Text>
+                        </Animated.View>
+                    )}
 
-                    <TouchableOpacity style={styles.pickerBox} onPress={() => setPickerVisible("to")}>
-                        <Text style={styles.label}>To</Text>
-                        <Text style={styles.pickerText}>{to}</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <TouchableOpacity style={styles.button} onPress={convert}>
-                    <Text style={styles.buttonText}>Convert</Text>
-                </TouchableOpacity>
-
-                {converted && (
-                    <Animated.View style={{ opacity: fade, marginTop: 25 }}>
-                        <Text style={styles.resultText}>
-                            {amount} {from} = {converted} {to}
-                        </Text>
-                    </Animated.View>
-                )}
-
-                {/* Picker Modal */}
-                <Modal visible={!!pickerVisible} transparent animationType="slide">
-                    <TouchableWithoutFeedback onPress={() => setPickerVisible(null)}>
-                        <View style={styles.modalOverlay}>
-                            <View style={styles.modalBox}>
-                                <ScrollView>
-                                    {currencies.map((cur) => (
-                                        <TouchableOpacity
-                                            key={cur}
-                                            style={styles.modalItem}
-                                            onPress={() => selectCurrency(cur)}
-                                        >
-                                            <Text style={styles.modalText}>{cur}</Text>
-                                        </TouchableOpacity>
-                                    ))}
-                                </ScrollView>
+                    <Modal visible={!!pickerVisible} transparent animationType="slide">
+                        <TouchableWithoutFeedback onPress={() => setPickerVisible(null)}>
+                            <View style={styles.modalOverlay}>
+                                <View style={styles.modalBox}>
+                                    <ScrollView>
+                                        {currencies.map((cur) => (
+                                            <TouchableOpacity
+                                                key={cur}
+                                                style={styles.modalItem}
+                                                onPress={() => selectCurrency(cur)}
+                                            >
+                                                <Text style={styles.modalText}>{cur}</Text>
+                                            </TouchableOpacity>
+                                        ))}
+                                    </ScrollView>
+                                </View>
                             </View>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </Modal>
-            </View>
-        </TouchableWithoutFeedback>
+                        </TouchableWithoutFeedback>
+                    </Modal>
+                </View>
+            </TouchableWithoutFeedback>
+        </ThemedView>
     );
 };
 
@@ -133,7 +135,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#F9FAFB",
         padding: 20,
-        paddingTop: 60,
     },
     title: {
         color: "#111827",

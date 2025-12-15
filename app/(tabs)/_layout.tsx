@@ -1,5 +1,5 @@
+import { Feather, FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { Ionicons, MaterialIcons, FontAwesome5, Feather } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function DashboardLayout() {

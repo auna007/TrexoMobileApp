@@ -2,23 +2,38 @@ import React, { useState } from "react";
 import {
     View,
     Text,
-    StyleSheet,
+    TextInput,
     TouchableOpacity,
+    StyleSheet,
     Alert,
     Image,
+    ScrollView,
+    Platform,
+    Modal,
+    Button,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Ionicons } from "@expo/vector-icons";
+import { Picker } from "@react-native-picker/picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import ThemedView from "../components/ThemedView";
 
 const Kyc = () => {
-    const [selfie, setSelfie] = useState<string | null>(null);
-    const [idDocument, setIdDocument] = useState<string | null>(null);
+    const [fullName, setFullName] = useState("");
+    const [dob, setDob] = useState<Date | null>(null);
+    const [showDobPicker, setShowDobPicker] = useState(false);
+    const [address, setAddress] = useState("");
+    const [idType, setIdType] = useState("Passport");
+    const [idNumber, setIdNumber] = useState("");
+    const [idImage, setIdImage] = useState<string | null>(null);
+    const [passport, setPassport] = useState<string | null>(null);
+    const [showIdTypePicker, setShowIdTypePicker] = useState(false);
 
     const pickDocument = async (
         setter: React.Dispatch<React.SetStateAction<string | null>>
     ) => {
         const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images as any,
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             quality: 0.7,
         });
@@ -29,8 +44,8 @@ const Kyc = () => {
     };
 
     const handleSubmit = () => {
-        if (!selfie || !idDocument) {
-            Alert.alert("Incomplete", "Please upload both your selfie and ID document.");
+        if (!fullName || !dob || !address || !idNumber || !idImage || !passport) {
+            Alert.alert("Incomplete", "Please fill all fields and upload all documents.");
             return;
         }
         Alert.alert("Success", "Your KYC documents have been submitted.");
@@ -48,37 +63,122 @@ const Kyc = () => {
                     {uri ? "Change " + label : "Upload " + label}
                 </Text>
             </TouchableOpacity>
-            {uri && (
-                <Image
-                    source={{ uri }}
-                    style={styles.previewImage}
-                    resizeMode="cover"
-                />
-            )}
+            {uri && <Image source={{ uri }} style={styles.previewImage} />}
         </View>
     );
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>KYC Verification</Text>
-            <Text style={styles.subtitle}>Upload your selfie and ID to verify your account</Text>
+        <ThemedView>
+            <ScrollView contentContainerStyle={styles.container}>
+                <Text style={styles.title}>KYC Verification</Text>
+                <Text style={styles.subtitle}>Complete the form to verify your account</Text>
 
-            {renderUploadButton("Selfie/Passport Photo", selfie, setSelfie)}
-            {renderUploadButton("Government ID", idDocument, setIdDocument)}
+                <TextInput
+                    style={styles.input}
+                    placeholder="Full Name"
+                    placeholderTextColor="#999"
+                    value={fullName}
+                    onChangeText={setFullName}
+                />
 
-            <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit}>
-                <Text style={styles.submitText}>Submit KYC</Text>
-            </TouchableOpacity>
-        </View>
+                <TouchableOpacity
+                    style={styles.input}
+                    onPress={() => setShowDobPicker(true)}
+                >
+                    <Text style={{ color: dob ? "#111" : "#999" }}>
+                        {dob ? dob.toDateString() : "Date of Birth"}
+                    </Text>
+                </TouchableOpacity>
+                {showDobPicker && (
+                    <DateTimePicker
+                        value={dob || new Date()}
+                        mode="date"
+                        display="default"
+                        maximumDate={new Date()}
+                        onChange={(event, selectedDate) => {
+                            setShowDobPicker(false);
+                            if (selectedDate) setDob(selectedDate);
+                        }}
+                    />
+                )}
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="Residential Address"
+                    placeholderTextColor="#999"
+                    value={address}
+                    onChangeText={setAddress}
+                />
+
+                {Platform.OS === "ios" ? (
+                    <>
+                        <TouchableOpacity
+                            style={styles.input}
+                            onPress={() => setShowIdTypePicker(true)}
+                        >
+                            <Text style={{ color: "#111" }}>{idType}</Text>
+                        </TouchableOpacity>
+                        <Modal
+                            transparent
+                            animationType="slide"
+                            visible={showIdTypePicker}
+                        >
+                            <View style={styles.modalOverlay}>
+                                <View style={styles.modalContent}>
+                                    <Button title="Done" onPress={() => setShowIdTypePicker(false)} />
+                                    <Picker
+                                        selectedValue={idType}
+                                        onValueChange={(itemValue) => setIdType(itemValue)}
+                                        itemStyle={{ color: "#111", fontSize: 16 }}
+                                    >
+                                        <Picker.Item label="Passport" value="Passport" />
+                                        <Picker.Item label="Driver's License" value="Driver's License" />
+                                        <Picker.Item label="National ID" value="National ID" />
+                                    </Picker>
+                                </View>
+                            </View>
+                        </Modal>
+
+                    </>
+                ) : (
+                    <View style={styles.pickerContainer}>
+                        <Picker
+                            selectedValue={idType}
+                            onValueChange={(itemValue) => setIdType(itemValue)}
+                            style={styles.picker}
+                        >
+                            <Picker.Item label="Passport" value="Passport" />
+                            <Picker.Item label="Driver's License" value="Driver's License" />
+                            <Picker.Item label="National ID" value="National ID" />
+                        </Picker>
+                    </View>
+                )}
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="ID Number"
+                    placeholderTextColor="#999"
+                    value={idNumber}
+                    onChangeText={setIdNumber}
+                />
+
+                {renderUploadButton(`${idType} Image`, idImage, setIdImage)}
+                {renderUploadButton("Passport/Selfie", passport, setPassport)}
+
+                <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit}>
+                    <Text style={styles.submitText}>Submit KYC</Text>
+                </TouchableOpacity>
+            </ScrollView>
+        </ThemedView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         padding: 20,
         backgroundColor: "#f8f8f8",
-        paddingTop: 60,
+        paddingBottom: 40,
+        flexGrow: 1,
     },
     title: {
         fontSize: 26,
@@ -91,6 +191,23 @@ const styles = StyleSheet.create({
         color: "#555",
         marginBottom: 25,
     },
+    input: {
+        backgroundColor: "#fff",
+        borderRadius: 12,
+        paddingHorizontal: 15,
+        paddingVertical: 14,
+        fontSize: 16,
+        marginBottom: 15,
+        color: "#111",
+        justifyContent: "center",
+    },
+    pickerContainer: {
+        backgroundColor: "#fff",
+        borderRadius: 12,
+        marginBottom: 15,
+        overflow: "hidden",
+    },
+    picker: { height: 50, width: "100%" },
     uploadBtn: {
         flexDirection: "row",
         alignItems: "center",
@@ -120,12 +237,20 @@ const styles = StyleSheet.create({
         paddingVertical: 16,
         borderRadius: 12,
         alignItems: "center",
-        marginTop: 30,
+        marginTop: 10,
     },
     submitText: {
         color: "#fff",
         fontSize: 16,
         fontWeight: "700",
+    },
+    modalOverlay: {
+        flex: 1,
+        justifyContent: "flex-end",
+        backgroundColor: "rgba(0,0,0,0.3)",
+    },
+    modalContent: {
+        backgroundColor: "#fff",
     },
 });
 

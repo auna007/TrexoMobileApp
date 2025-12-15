@@ -1,16 +1,17 @@
+import { Feather, Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
-    View,
-    Text,
-    TouchableOpacity,
+    Keyboard,
+    Modal,
     ScrollView,
     StyleSheet,
-    Modal,
+    Text,
     TextInput,
+    TouchableOpacity,
     TouchableWithoutFeedback,
-    Keyboard,
+    View,
 } from "react-native";
-import { Ionicons, Feather } from "@expo/vector-icons";
+import ThemedView from "../components/ThemedView";
 
 const Addresses = () => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -47,107 +48,109 @@ const Addresses = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <ScrollView contentContainerStyle={styles.scrollContainer}>
-                <Text style={styles.title}>My Addresses</Text>
+        <ThemedView>
+            <View style={styles.container}>
+                <ScrollView contentContainerStyle={styles.scrollContainer}>
+                    <Text style={styles.title}>My Addresses</Text>
 
-                {addresses.map((addr) => (
-                    <View key={addr.id} style={styles.addressCard}>
-                        <View style={styles.cardHeader}>
-                            <Text style={styles.cardLabel}>{addr.label}</Text>
-                            {addr.isDefault && (
-                                <View style={styles.defaultBadge}>
-                                    <Text style={styles.defaultBadgeText}>DEFAULT</Text>
-                                </View>
-                            )}
-                        </View>
-
-                        <Text style={styles.cardDetails}>{addr.details}</Text>
-                        <Text style={styles.cardPhone}>{addr.phone}</Text>
-
-                        <View style={styles.cardActions}>
-                            <TouchableOpacity>
-                                <Feather name="edit" size={20} color="#555" />
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <Feather name="trash-2" size={20} color="#D91339" />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                ))}
-
-                <TouchableOpacity
-                    style={styles.addButton}
-                    onPress={() => setModalVisible(true)}
-                >
-                    <Ionicons name="add-circle-outline" size={22} color="#fff" />
-                    <Text style={styles.addButtonText}>Add New Address</Text>
-                </TouchableOpacity>
-            </ScrollView>
-
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => setModalVisible(false)}
-            >
-                <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-                    <View style={styles.modalOverlay}>
-                        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                            <View style={styles.modalContainer}>
-                                <Text style={styles.modalTitle}>Add New Address</Text>
-
-                                <Text style={styles.inputLabel}>Label</Text>
-                                <TextInput
-                                    placeholder="Home, Work, etc."
-                                    style={styles.input}
-                                    value={newAddress.label}
-                                    onChangeText={(text) =>
-                                        setNewAddress({ ...newAddress, label: text })
-                                    }
-                                />
-
-                                <Text style={styles.inputLabel}>Address Details</Text>
-                                <TextInput
-                                    placeholder="Street, City, State"
-                                    style={styles.input}
-                                    value={newAddress.details}
-                                    onChangeText={(text) =>
-                                        setNewAddress({ ...newAddress, details: text })
-                                    }
-                                />
-
-                                <Text style={styles.inputLabel}>Phone Number</Text>
-                                <TextInput
-                                    placeholder="+234 810 123 4567"
-                                    style={styles.input}
-                                    value={newAddress.phone}
-                                    onChangeText={(text) =>
-                                        setNewAddress({ ...newAddress, phone: text })
-                                    }
-                                    keyboardType="phone-pad"
-                                />
-
-                                <View style={styles.modalButtons}>
-                                    <TouchableOpacity
-                                        style={[styles.modalBtn, { backgroundColor: "#D91339" }]}
-                                        onPress={addAddress}
-                                    >
-                                        <Text style={styles.modalBtnText}>Save</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={[styles.modalBtn, { backgroundColor: "#777" }]}
-                                        onPress={() => setModalVisible(false)}
-                                    >
-                                        <Text style={styles.modalBtnText}>Cancel</Text>
-                                    </TouchableOpacity>
-                                </View>
+                    {addresses.map((addr) => (
+                        <View key={addr.id} style={styles.addressCard}>
+                            <View style={styles.cardHeader}>
+                                <Text style={styles.cardLabel}>{addr.label}</Text>
+                                {addr.isDefault && (
+                                    <View style={styles.defaultBadge}>
+                                        <Text style={styles.defaultBadgeText}>DEFAULT</Text>
+                                    </View>
+                                )}
                             </View>
-                        </TouchableWithoutFeedback>
-                    </View>
-                </TouchableWithoutFeedback>
-            </Modal>
-        </View>
+
+                            <Text style={styles.cardDetails}>{addr.details}</Text>
+                            <Text style={styles.cardPhone}>{addr.phone}</Text>
+
+                            <View style={styles.cardActions}>
+                                <TouchableOpacity>
+                                    <Feather name="edit" size={20} color="#555" />
+                                </TouchableOpacity>
+                                <TouchableOpacity>
+                                    <Feather name="trash-2" size={20} color="#D91339" />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    ))}
+
+                    <TouchableOpacity
+                        style={styles.addButton}
+                        onPress={() => setModalVisible(true)}
+                    >
+                        <Ionicons name="add-circle-outline" size={22} color="#fff" />
+                        <Text style={styles.addButtonText}>Add New Address</Text>
+                    </TouchableOpacity>
+                </ScrollView>
+
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => setModalVisible(false)}
+                >
+                    <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+                        <View style={styles.modalOverlay}>
+                            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                                <View style={styles.modalContainer}>
+                                    <Text style={styles.modalTitle}>Add New Address</Text>
+
+                                    <Text style={styles.inputLabel}>Label</Text>
+                                    <TextInput
+                                        placeholder="Home, Work, etc."
+                                        style={styles.input}
+                                        value={newAddress.label}
+                                        onChangeText={(text) =>
+                                            setNewAddress({ ...newAddress, label: text })
+                                        }
+                                    />
+
+                                    <Text style={styles.inputLabel}>Address Details</Text>
+                                    <TextInput
+                                        placeholder="Street, City, State"
+                                        style={styles.input}
+                                        value={newAddress.details}
+                                        onChangeText={(text) =>
+                                            setNewAddress({ ...newAddress, details: text })
+                                        }
+                                    />
+
+                                    <Text style={styles.inputLabel}>Phone Number</Text>
+                                    <TextInput
+                                        placeholder="+234 810 123 4567"
+                                        style={styles.input}
+                                        value={newAddress.phone}
+                                        onChangeText={(text) =>
+                                            setNewAddress({ ...newAddress, phone: text })
+                                        }
+                                        keyboardType="phone-pad"
+                                    />
+
+                                    <View style={styles.modalButtons}>
+                                        <TouchableOpacity
+                                            style={[styles.modalBtn, { backgroundColor: "#D91339" }]}
+                                            onPress={addAddress}
+                                        >
+                                            <Text style={styles.modalBtnText}>Save</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            style={[styles.modalBtn, { backgroundColor: "#777" }]}
+                                            onPress={() => setModalVisible(false)}
+                                        >
+                                            <Text style={styles.modalBtnText}>Cancel</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </Modal>
+            </View>
+        </ThemedView>
     );
 };
 
@@ -155,7 +158,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#f8f8f8",
-        paddingTop: 40,
     },
     scrollContainer: {
         padding: 20,

@@ -16,6 +16,7 @@ import { Picker } from "@react-native-picker/picker";
 import { useCart } from "@/contexts/CartContext";
 import { Ionicons, MaterialIcons, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import ThemedView from "../components/ThemedView";
 
 export default function CheckoutScreen() {
     const { cart, clearCart } = useCart();
@@ -81,178 +82,180 @@ export default function CheckoutScreen() {
     };
 
     return (
-        <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : undefined}
-            style={{ flex: 1, backgroundColor: "#f2f2f2" }}
-        >
-            <ScrollView contentContainerStyle={{ padding: 20 }}>
-                <Text style={styles.header}>
-                    Checkout <Ionicons name="cart-outline" size={24} color="#D91339" />
-                </Text>
+        <ThemedView>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : undefined}
+                style={{ flex: 1, backgroundColor: "#f2f2f2" }}
+            >
+                <ScrollView contentContainerStyle={{ padding: 20 }}>
+                    <Text style={styles.header}>
+                        Checkout <Ionicons name="cart-outline" size={24} color="#D91339" />
+                    </Text>
 
-                <View style={styles.card}>
-                    <Text style={styles.sectionTitle}>Shipping Details</Text>
-                    <Pressable style={styles.checkboxContainer} onPress={handleAutoFill}>
-                        <Ionicons
-                            name={useSaved ? "checkbox" : "square-outline"}
-                            size={24}
-                            color="#D91339"
-                        />
-                        <Text style={{ marginLeft: 8 }}>Use saved shipping details</Text>
-                    </Pressable>
-
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Full Name"
-                        placeholderTextColor="#888"
-                        value={name}
-                        onChangeText={setName}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Phone Number"
-                        placeholderTextColor="#888"
-                        value={phone}
-                        onChangeText={setPhone}
-                        keyboardType="phone-pad"
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Street Address"
-                        placeholderTextColor="#888"
-                        value={street}
-                        onChangeText={setStreet}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="City"
-                        placeholderTextColor="#888"
-                        value={city}
-                        onChangeText={setCity}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Postal Code"
-                        placeholderTextColor="#888"
-                        value={postalCode}
-                        onChangeText={setPostalCode}
-                        keyboardType="number-pad"
-                    />
-
-                    <View style={styles.dropdownContainer}>
-                        <MaterialIcons
-                            name="public"
-                            size={20}
-                            color="#888"
-                            style={{ marginRight: 8 }}
-                        />
-                        <Picker
-                            selectedValue={country}
-                            onValueChange={(itemValue: string) => setCountry(itemValue)}
-                            style={styles.picker}
-                        >
-                            <Picker.Item label="Nigeria" value="Nigeria" />
-                            <Picker.Item label="United States" value="United States" />
-                            <Picker.Item label="United Kingdom" value="United Kingdom" />
-                            <Picker.Item label="Canada" value="Canada" />
-                        </Picker>
-                    </View>
-
-                    <View style={styles.dropdownContainer}>
-                        <Ionicons
-                            name="airplane-outline"
-                            size={20}
-                            color="#888"
-                            style={{ marginRight: 8 }}
-                        />
-                        <Picker
-                            selectedValue={shippingType}
-                            onValueChange={(itemValue: string) => setShippingType(itemValue)}
-                            style={styles.picker}
-                        >
-                            <Picker.Item label="Sea Cargo" value="Sea Cargo" />
-                            <Picker.Item label="Air Cargo" value="Air Cargo" />
-                        </Picker>
-                    </View>
-
-                    <View style={styles.divider} />
-
-                    <Text style={styles.sectionTitle}>Payment Method</Text>
-                    {Object.keys(paymentIcons).map((method) => (
-                        <Pressable
-                            key={method}
-                            style={styles.radioContainer}
-                            onPress={() => setPaymentMethod(method)}
-                        >
-                            {paymentIcons[method]}
-                            <Text style={{ marginLeft: 10 }}>{method}</Text>
+                    <View style={styles.card}>
+                        <Text style={styles.sectionTitle}>Shipping Details</Text>
+                        <Pressable style={styles.checkboxContainer} onPress={handleAutoFill}>
                             <Ionicons
-                                name={
-                                    paymentMethod === method
-                                        ? "radio-button-on"
-                                        : "radio-button-off"
-                                }
+                                name={useSaved ? "checkbox" : "square-outline"}
                                 size={24}
                                 color="#D91339"
-                                style={{ marginLeft: "auto" }}
                             />
+                            <Text style={{ marginLeft: 8 }}>Use saved shipping details</Text>
                         </Pressable>
-                    ))}
 
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Delivery Notes (Optional)"
-                        placeholderTextColor="#888"
-                        value={deliveryNotes}
-                        onChangeText={setDeliveryNotes}
-                    />
-
-                    <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
-                        <Text style={styles.checkoutText}>Place Order</Text>
-                        <Ionicons
-                            name="arrow-forward-circle-outline"
-                            size={24}
-                            color="#fff"
-                            style={{ marginLeft: 8 }}
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Full Name"
+                            placeholderTextColor="#888"
+                            value={name}
+                            onChangeText={setName}
                         />
-                    </TouchableOpacity>
-                </View>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Phone Number"
+                            placeholderTextColor="#888"
+                            value={phone}
+                            onChangeText={setPhone}
+                            keyboardType="phone-pad"
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Street Address"
+                            placeholderTextColor="#888"
+                            value={street}
+                            onChangeText={setStreet}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="City"
+                            placeholderTextColor="#888"
+                            value={city}
+                            onChangeText={setCity}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Postal Code"
+                            placeholderTextColor="#888"
+                            value={postalCode}
+                            onChangeText={setPostalCode}
+                            keyboardType="number-pad"
+                        />
 
-                <View style={styles.card}>
-                    <Text style={styles.sectionTitle}>Order Summary</Text>
-                    {cart.map((item) => (
-                        <View key={item.id} style={styles.summaryRow}>
-                            <Image source={item.image} style={styles.summaryImage} />
-                            <View style={{ flex: 1, marginLeft: 10 }}>
-                                <Text style={styles.itemName}>{item.name}</Text>
+                        <View style={styles.dropdownContainer}>
+                            <MaterialIcons
+                                name="public"
+                                size={20}
+                                color="#888"
+                                style={{ marginRight: 8 }}
+                            />
+                            <Picker
+                                selectedValue={country}
+                                onValueChange={(itemValue: string) => setCountry(itemValue)}
+                                style={styles.picker}
+                            >
+                                <Picker.Item label="Nigeria" value="Nigeria" />
+                                <Picker.Item label="United States" value="United States" />
+                                <Picker.Item label="United Kingdom" value="United Kingdom" />
+                                <Picker.Item label="Canada" value="Canada" />
+                            </Picker>
+                        </View>
+
+                        <View style={styles.dropdownContainer}>
+                            <Ionicons
+                                name="airplane-outline"
+                                size={20}
+                                color="#888"
+                                style={{ marginRight: 8 }}
+                            />
+                            <Picker
+                                selectedValue={shippingType}
+                                onValueChange={(itemValue: string) => setShippingType(itemValue)}
+                                style={styles.picker}
+                            >
+                                <Picker.Item label="Sea Cargo" value="Sea Cargo" />
+                                <Picker.Item label="Air Cargo" value="Air Cargo" />
+                            </Picker>
+                        </View>
+
+                        <View style={styles.divider} />
+
+                        <Text style={styles.sectionTitle}>Payment Method</Text>
+                        {Object.keys(paymentIcons).map((method) => (
+                            <Pressable
+                                key={method}
+                                style={styles.radioContainer}
+                                onPress={() => setPaymentMethod(method)}
+                            >
+                                {paymentIcons[method]}
+                                <Text style={{ marginLeft: 10 }}>{method}</Text>
+                                <Ionicons
+                                    name={
+                                        paymentMethod === method
+                                            ? "radio-button-on"
+                                            : "radio-button-off"
+                                    }
+                                    size={24}
+                                    color="#D91339"
+                                    style={{ marginLeft: "auto" }}
+                                />
+                            </Pressable>
+                        ))}
+
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Delivery Notes (Optional)"
+                            placeholderTextColor="#888"
+                            value={deliveryNotes}
+                            onChangeText={setDeliveryNotes}
+                        />
+
+                        <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
+                            <Text style={styles.checkoutText}>Place Order</Text>
+                            <Ionicons
+                                name="arrow-forward-circle-outline"
+                                size={24}
+                                color="#fff"
+                                style={{ marginLeft: 8 }}
+                            />
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.card}>
+                        <Text style={styles.sectionTitle}>Order Summary</Text>
+                        {cart.map((item) => (
+                            <View key={item.id} style={styles.summaryRow}>
+                                <Image source={item.image} style={styles.summaryImage} />
+                                <View style={{ flex: 1, marginLeft: 10 }}>
+                                    <Text style={styles.itemName}>{item.name}</Text>
+                                    <Text style={styles.itemPrice}>
+                                        Qty: {item.quantity} x ₦{item.price}
+                                    </Text>
+                                </View>
                                 <Text style={styles.itemPrice}>
-                                    Qty: {item.quantity} x ₦{item.price}
+                                    ₦
+                                    {(
+                                        parseFloat(item.price.toString().replace(/[^0-9.]/g, "")) *
+                                        (item.quantity || 1)
+                                    ).toLocaleString()}
                                 </Text>
                             </View>
-                            <Text style={styles.itemPrice}>
-                                ₦
-                                {(
-                                    parseFloat(item.price.toString().replace(/[^0-9.]/g, "")) *
-                                    (item.quantity || 1)
-                                ).toLocaleString()}
-                            </Text>
-                        </View>
-                    ))}
-                    <View style={styles.divider} />
-                    <Text style={styles.summaryText}>
-                        Subtotal: ₦{total.toLocaleString()}
-                    </Text>
-                    <Text style={styles.summaryText}>Shipping: Free</Text>
-                    <Text style={styles.summaryText}>Tax: Included</Text>
-                    <Text style={[styles.summaryText, { fontWeight: "bold", fontSize: 18 }]}>
-                        Total: ₦{total.toLocaleString()}
-                    </Text>
-                    <Text style={{ marginTop: 10, color: "#27ae60" }}>
-                        🎉 You saved ₦{(total * 0.1).toFixed(2)} with free shipping!
-                    </Text>
-                </View>
-            </ScrollView>
-        </KeyboardAvoidingView>
+                        ))}
+                        <View style={styles.divider} />
+                        <Text style={styles.summaryText}>
+                            Subtotal: ₦{total.toLocaleString()}
+                        </Text>
+                        <Text style={styles.summaryText}>Shipping: Free</Text>
+                        <Text style={styles.summaryText}>Tax: Included</Text>
+                        <Text style={[styles.summaryText, { fontWeight: "bold", fontSize: 18 }]}>
+                            Total: ₦{total.toLocaleString()}
+                        </Text>
+                        <Text style={{ marginTop: 10, color: "#27ae60" }}>
+                            🎉 You saved ₦{(total * 0.1).toFixed(2)} with free shipping!
+                        </Text>
+                    </View>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </ThemedView>
     );
 }
 

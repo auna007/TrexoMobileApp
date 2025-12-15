@@ -11,6 +11,7 @@ import {
     Animated,
 } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
+import ThemedView from "../components/ThemedView";
 
 const faqs = [
     {
@@ -65,94 +66,95 @@ const Support = () => {
     }, [chatMessages, chatVisible]);
 
     return (
-        <KeyboardAvoidingView
-            style={{ flex: 1, backgroundColor: "#f8f8f8" }}
-            behavior={Platform.OS === "ios" ? "padding" : undefined}
-        >
-            <ScrollView
-                contentContainerStyle={styles.container}
-                ref={scrollRef}
+        <ThemedView>
+            <KeyboardAvoidingView
+                style={{ flex: 1, backgroundColor: "#f8f8f8" }}
+                behavior={Platform.OS === "ios" ? "padding" : undefined}
             >
-                <Text style={styles.title}>Support Center</Text>
+                <ScrollView
+                    contentContainerStyle={styles.container}
+                    ref={scrollRef}
+                >
+                    <Text style={styles.title}>Support Center</Text>
 
-                <View style={styles.contactCard}>
-                    <Text style={styles.contactTitle}>Contact Us</Text>
-                    <TouchableOpacity style={styles.contactOption} onPress={() => {}}>
-                        <Feather name="mail" size={20} color="#D91339" />
-                        <Text style={styles.contactText}>support@trexo.com</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.contactOption} onPress={() => {}}>
-                        <Feather name="phone" size={20} color="#D91339" />
-                        <Text style={styles.contactText}>+234 810 555 9000</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={styles.faqCard}>
-                    <Text style={styles.faqTitle}>Frequently Asked Questions</Text>
-                    {faqs.map((faq, index) => (
-                        <View key={index} style={styles.faqItem}>
-                            <View style={styles.questionRow}>
-                                <Ionicons name="help-circle-outline" size={20} color="#D91339" />
-                                <Text style={styles.question}>{faq.question}</Text>
-                            </View>
-                            <Text style={styles.answer}>{faq.answer}</Text>
-                        </View>
-                    ))}
-                </View>
-            </ScrollView>
-
-            {chatVisible && (
-                <View style={styles.chatContainer}>
-                    <Text style={styles.chatTitle}>Live Chat</Text>
-                    <ScrollView
-                        style={styles.chatMessages}
-                        ref={scrollRef}
-                        contentContainerStyle={{ paddingBottom: 10 }}
-                    >
-                        {chatMessages.length === 0 && (
-                            <Text style={styles.chatHint}>Start typing below to chat with support...</Text>
-                        )}
-                        {chatMessages.map((msg) => (
-                            <View
-                                key={msg.id}
-                                style={[
-                                    styles.chatMessage,
-                                    msg.sender === "user" ? styles.userMsg : styles.supportMsg,
-                                ]}
-                            >
-                                <Text style={[styles.chatText, msg.sender === "support" && { color: "#111" }]}>{msg.text}</Text>
-                            </View>
-                        ))}
-                    </ScrollView>
-                    <View style={styles.inputRow}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Type your message..."
-                            placeholderTextColor="#9CA3AF"
-                            value={inputText}
-                            onChangeText={setInputText}
-                        />
-                        <TouchableOpacity style={styles.sendBtn} onPress={handleSend}>
-                            <Feather name="send" size={22} color="#fff" />
+                    <View style={styles.contactCard}>
+                        <Text style={styles.contactTitle}>Contact Us</Text>
+                        <TouchableOpacity style={styles.contactOption} onPress={() => {}}>
+                            <Feather name="mail" size={20} color="#D91339" />
+                            <Text style={styles.contactText}>support@trexo.com</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.contactOption} onPress={() => {}}>
+                            <Feather name="phone" size={20} color="#D91339" />
+                            <Text style={styles.contactText}>+234 810 555 9000</Text>
                         </TouchableOpacity>
                     </View>
-                </View>
-            )}
 
-            <TouchableOpacity
-                style={styles.floatingBtn}
-                onPress={() => setChatVisible(!chatVisible)}
-            >
-                <Feather name="message-circle" size={28} color="#fff" />
-            </TouchableOpacity>
-        </KeyboardAvoidingView>
+                    <View style={styles.faqCard}>
+                        <Text style={styles.faqTitle}>Frequently Asked Questions</Text>
+                        {faqs.map((faq, index) => (
+                            <View key={index} style={styles.faqItem}>
+                                <View style={styles.questionRow}>
+                                    <Ionicons name="help-circle-outline" size={20} color="#D91339" />
+                                    <Text style={styles.question}>{faq.question}</Text>
+                                </View>
+                                <Text style={styles.answer}>{faq.answer}</Text>
+                            </View>
+                        ))}
+                    </View>
+                </ScrollView>
+
+                {chatVisible && (
+                    <View style={styles.chatContainer}>
+                        <Text style={styles.chatTitle}>Live Chat</Text>
+                        <ScrollView
+                            style={styles.chatMessages}
+                            ref={scrollRef}
+                            contentContainerStyle={{ paddingBottom: 10 }}
+                        >
+                            {chatMessages.length === 0 && (
+                                <Text style={styles.chatHint}>Start typing below to chat with support...</Text>
+                            )}
+                            {chatMessages.map((msg) => (
+                                <View
+                                    key={msg.id}
+                                    style={[
+                                        styles.chatMessage,
+                                        msg.sender === "user" ? styles.userMsg : styles.supportMsg,
+                                    ]}
+                                >
+                                    <Text style={[styles.chatText, msg.sender === "support" && { color: "#111" }]}>{msg.text}</Text>
+                                </View>
+                            ))}
+                        </ScrollView>
+                        <View style={styles.inputRow}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Type your message..."
+                                placeholderTextColor="#9CA3AF"
+                                value={inputText}
+                                onChangeText={setInputText}
+                            />
+                            <TouchableOpacity style={styles.sendBtn} onPress={handleSend}>
+                                <Feather name="send" size={22} color="#fff" />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                )}
+
+                <TouchableOpacity
+                    style={styles.floatingBtn}
+                    onPress={() => setChatVisible(!chatVisible)}
+                >
+                    <Feather name="message-circle" size={28} color="#fff" />
+                </TouchableOpacity>
+            </KeyboardAvoidingView>
+        </ThemedView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         padding: 20,
-        paddingTop: 50,
         paddingBottom: 20,
     },
     title: {

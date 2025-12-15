@@ -1,11 +1,12 @@
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 
 import TrexoHeader from "../../components/trexo-mall/TrexoHeader";
 import TrendingSection from "../../components/trexo-mall/TrendingSection";
 import ProductGrid from "../../components/trexo-mall/ProductGrid";
 
 import { products as productData } from "@/data/products";
+import ThemedView from "@/app/components/ThemedView";
 
 const TrexoMall = () => {
 
@@ -26,22 +27,31 @@ const TrexoMall = () => {
     }));
 
     return (
-        <FlatList
-            data={products}
-            numColumns={2}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(item) => item.id.toString()}
-            columnWrapperStyle={{ justifyContent: "space-between" }}
-            ListHeaderComponent={
-                <>
-                    <TrexoHeader />
-                    <TrendingSection trending={trending} />
-                </>
-            }
-            renderItem={({ item }) => <ProductGrid item={item} />}
-            contentContainerStyle={{ paddingHorizontal: 15, paddingBottom: 120 }}
-        />
+        <ThemedView>
+            <FlatList
+                style={styles.container}
+                data={products}
+                numColumns={2}
+                showsVerticalScrollIndicator={false}
+                keyExtractor={(item) => item.id.toString()}
+                columnWrapperStyle={{ justifyContent: "space-between" }}
+                ListHeaderComponent={
+                    <>
+                        <TrexoHeader />
+                        <TrendingSection trending={trending} />
+                    </>
+                }
+                renderItem={({ item }) => <ProductGrid item={item} />}
+                contentContainerStyle={{ paddingHorizontal: 15, paddingBottom: 120 }}
+            />
+        </ThemedView>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: "#fff"
+    }
+})
 
 export default TrexoMall;

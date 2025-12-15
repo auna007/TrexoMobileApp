@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter, useLocalSearchParams } from "expo-router";
+import ThemedView from "../components/ThemedView";
 
 const OrderStatus = () => {
     const router = useRouter();
@@ -11,52 +12,54 @@ const OrderStatus = () => {
     const isSuccess = status === "success";
 
     return (
-        <View style={styles.container}>
-            <View style={styles.iconContainer}>
-                {isSuccess ? (
-                    <Ionicons name="checkmark-circle" size={120} color="#34D399" />
-                ) : (
-                    <Ionicons name="close-circle" size={120} color="#EF4444" />
+        <ThemedView>
+            <View style={styles.container}>
+                <View style={styles.iconContainer}>
+                    {isSuccess ? (
+                        <Ionicons name="checkmark-circle" size={120} color="#34D399" />
+                    ) : (
+                        <Ionicons name="close-circle" size={120} color="#EF4444" />
+                    )}
+                </View>
+
+                <Text style={styles.title}>
+                    {isSuccess ? "Order Successful!" : "Order Failed"}
+                </Text>
+
+                <Text style={styles.message}>
+                    {isSuccess
+                        ? "Your order has been placed successfully. You will receive a confirmation shortly."
+                        : "Something went wrong with your order. Please try again or contact support."}
+                </Text>
+
+                <View style={styles.buttonContainer}>
+                    {isSuccess ? (
+                        <TouchableOpacity
+                            style={styles.primaryButton}
+                            onPress={() => router.push("/(tabs)")}
+                        >
+                            <Text style={styles.buttonText}>Go to Home</Text>
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity
+                            style={styles.primaryButton}
+                            onPress={() => router.back()}
+                        >
+                            <Text style={styles.buttonText}>Retry Order</Text>
+                        </TouchableOpacity>
+                    )}
+                </View>
+
+                {isSuccess && (
+                    <TouchableOpacity
+                        style={styles.secondaryButton}
+                        onPress={() => router.push("/orders")}
+                    >
+                        <Text style={styles.secondaryText}>View My Orders</Text>
+                    </TouchableOpacity>
                 )}
             </View>
-
-            <Text style={styles.title}>
-                {isSuccess ? "Order Successful!" : "Order Failed"}
-            </Text>
-
-            <Text style={styles.message}>
-                {isSuccess
-                    ? "Your order has been placed successfully. You will receive a confirmation shortly."
-                    : "Something went wrong with your order. Please try again or contact support."}
-            </Text>
-
-            <View style={styles.buttonContainer}>
-                {isSuccess ? (
-                    <TouchableOpacity
-                        style={styles.primaryButton}
-                        onPress={() => router.push("/(tabs)")}
-                    >
-                        <Text style={styles.buttonText}>Go to Home</Text>
-                    </TouchableOpacity>
-                ) : (
-                    <TouchableOpacity
-                        style={styles.primaryButton}
-                        onPress={() => router.back()}
-                    >
-                        <Text style={styles.buttonText}>Retry Order</Text>
-                    </TouchableOpacity>
-                )}
-            </View>
-
-            {isSuccess && (
-                <TouchableOpacity
-                    style={styles.secondaryButton}
-                    onPress={() => router.push("/orders")}
-                >
-                    <Text style={styles.secondaryText}>View My Orders</Text>
-                </TouchableOpacity>
-            )}
-        </View>
+        </ThemedView>
     );
 };
 

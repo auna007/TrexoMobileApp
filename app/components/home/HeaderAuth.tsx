@@ -1,7 +1,7 @@
-import React from "react";
-import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
-import { Link } from "expo-router";
 import { Feather } from "@expo/vector-icons";
+import { Link } from "expo-router";
+import React from "react";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
 const HeaderAuth = () => {
     return (

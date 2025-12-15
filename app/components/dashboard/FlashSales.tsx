@@ -1,8 +1,11 @@
 import React from "react";
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 const FlashSales = () => {
+    const router = useRouter();
+
     const products = [
         { id: 1, image: require("@/assets/images/product-1.png"), name: "Smart Fan", price: "₦25,000", oldPrice: "₦30,000", discount: "-17%" },
         { id: 2, image: require("@/assets/images/product-2.jpg"), name: "Cool Shades", price: "₦10,000", oldPrice: "₦14,000", discount: "-28%" },
@@ -17,8 +20,11 @@ const FlashSales = () => {
                     <Ionicons name="flash" size={20} color="#D91339" />
                     <Text style={styles.title}>Flash Sales</Text>
                 </View>
-                <TouchableOpacity activeOpacity={0.7}>
-                    <Text style={styles.viewAll}>View All →</Text>
+                <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => router.push("/products")}
+                >
+                    <Text style={styles.viewAll}>View All</Text>
                 </TouchableOpacity>
             </View>
 
@@ -51,9 +57,7 @@ const FlashSales = () => {
 };
 
 const styles = StyleSheet.create({
-    section: {
-        marginBottom: 30,
-    },
+    section: { marginBottom: 30 },
     headerRow: {
         flexDirection: "row",
         justifyContent: "space-between",
@@ -61,21 +65,9 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         paddingHorizontal: 2,
     },
-    titleRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 6,
-    },
-    title: {
-        fontSize: 18,
-        fontWeight: "bold",
-        color: "#111",
-    },
-    viewAll: {
-        color: "#D91339",
-        fontWeight: "600",
-        fontSize: 14,
-    },
+    titleRow: { flexDirection: "row", alignItems: "center", gap: 6 },
+    title: { fontSize: 18, fontWeight: "bold", color: "#111" },
+    viewAll: { color: "#D91339", fontWeight: "600", fontSize: 14 },
     card: {
         backgroundColor: "#fff",
         width: 150,
@@ -100,45 +92,13 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         zIndex: 2,
     },
-    discountText: {
-        color: "#fff",
-        fontSize: 12,
-        fontWeight: "bold",
-    },
-    imageContainer: {
-        height: 110,
-        justifyContent: "center",
-        alignItems: "center",
-        marginBottom: 8,
-    },
-    image: {
-        width: 100,
-        height: 100,
-        resizeMode: "contain",
-    },
-    name: {
-        fontWeight: "600",
-        color: "#222",
-        textAlign: "center",
-        fontSize: 14,
-        marginBottom: 4,
-    },
-    priceRow: {
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 6,
-    },
-    price: {
-        fontWeight: "bold",
-        color: "#D91339",
-        fontSize: 14,
-    },
-    oldPrice: {
-        color: "#888",
-        textDecorationLine: "line-through",
-        fontSize: 12,
-    },
+    discountText: { color: "#fff", fontSize: 12, fontWeight: "bold" },
+    imageContainer: { height: 110, justifyContent: "center", alignItems: "center", marginBottom: 8 },
+    image: { width: 100, height: 100, resizeMode: "contain" },
+    name: { fontWeight: "600", color: "#222", textAlign: "center", fontSize: 14, marginBottom: 4 },
+    priceRow: { flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 6 },
+    price: { fontWeight: "bold", color: "#D91339", fontSize: 14 },
+    oldPrice: { color: "#888", textDecorationLine: "line-through", fontSize: 12 },
 });
 
 export default FlashSales;

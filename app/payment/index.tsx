@@ -11,6 +11,7 @@ import {
     Keyboard,
 } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
+import ThemedView from "../components/ThemedView";
 
 const PaymentMethods = () => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -35,131 +36,133 @@ const PaymentMethods = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <ScrollView contentContainerStyle={styles.scrollContainer}>
-                <Text style={styles.title}>Payment Methods</Text>
+        <ThemedView>
+            <View style={styles.container}>
+                <ScrollView contentContainerStyle={styles.scrollContainer}>
+                    <Text style={styles.title}>Payment Methods</Text>
 
-                {paymentMethods.map((card) => (
-                    <View key={card.id} style={styles.card}>
-                        <View style={styles.cardHeader}>
-                            <Text style={styles.cardTitle}>{card.type} **** {card.number}</Text>
-                            {card.isDefault && (
-                                <View style={styles.defaultBadge}>
-                                    <Text style={styles.defaultBadgeText}>DEFAULT</Text>
-                                </View>
-                            )}
-                        </View>
-
-                        <Text style={styles.cardHolder}>Card Holder: {card.holder}</Text>
-                        <Text style={styles.expiry}>Expiry: {card.expiry}</Text>
-
-                        <View style={styles.cardActions}>
-                            <TouchableOpacity style={styles.editBtn}>
-                                <Feather name="edit" size={16} color="#fff" />
-                                <Text style={styles.editText}>Edit</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.deleteBtn}>
-                                <Feather name="trash-2" size={16} color="#D91339" />
-                                <Text style={styles.deleteText}>Delete</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                ))}
-
-                <TouchableOpacity style={styles.addButton} onPress={() => setModalVisible(true)}>
-                    <Ionicons name="add-circle-outline" size={22} color="#fff" />
-                    <Text style={styles.addButtonText}>Add New Card</Text>
-                </TouchableOpacity>
-            </ScrollView>
-
-            <Modal
-                transparent
-                visible={modalVisible}
-                animationType="fade"
-                onRequestClose={() => setModalVisible(false)}
-            >
-                <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-                    <View style={styles.modalOverlay}>
-                        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                            <View style={styles.modalContainer}>
-                                <Text style={styles.modalTitle}>Add New Payment Method</Text>
-                                <Text style={styles.modalSubtitle}>
-                                    Enter your card details below. All fields are required.
-                                </Text>
-
-                                <Text style={styles.label}>Card Type</Text>
-                                <TextInput
-                                    placeholder="Visa, MasterCard"
-                                    style={styles.input}
-                                    value={newCard.type}
-                                    onChangeText={(text) => setNewCard({ ...newCard, type: text })}
-                                />
-
-                                <Text style={styles.label}>Card Number</Text>
-                                <TextInput
-                                    placeholder="1234 5678 9012 3456"
-                                    style={styles.input}
-                                    value={newCard.number}
-                                    onChangeText={(text) => setNewCard({ ...newCard, number: text })}
-                                    keyboardType="number-pad"
-                                />
-
-                                <View style={{ flexDirection: "row", gap: 10 }}>
-                                    <View style={{ flex: 1 }}>
-                                        <Text style={styles.label}>Expiry Date</Text>
-                                        <TextInput
-                                            placeholder="MM/YY"
-                                            style={styles.input}
-                                            value={newCard.expiry}
-                                            onChangeText={(text) => setNewCard({ ...newCard, expiry: text })}
-                                            keyboardType="number-pad"
-                                        />
+                    {paymentMethods.map((card) => (
+                        <View key={card.id} style={styles.card}>
+                            <View style={styles.cardHeader}>
+                                <Text style={styles.cardTitle}>{card.type} **** {card.number}</Text>
+                                {card.isDefault && (
+                                    <View style={styles.defaultBadge}>
+                                        <Text style={styles.defaultBadgeText}>DEFAULT</Text>
                                     </View>
-                                    <View style={{ flex: 1 }}>
-                                        <Text style={styles.label}>CVV</Text>
-                                        <TextInput
-                                            placeholder="123"
-                                            style={styles.input}
-                                            value={newCard.cvv}
-                                            onChangeText={(text) => setNewCard({ ...newCard, cvv: text })}
-                                            keyboardType="number-pad"
-                                        />
-                                    </View>
-                                </View>
-
-                                <Text style={styles.label}>Card Holder Name</Text>
-                                <TextInput
-                                    placeholder="John Doe"
-                                    style={styles.input}
-                                    value={newCard.holder}
-                                    onChangeText={(text) => setNewCard({ ...newCard, holder: text })}
-                                />
-
-                                <View style={styles.modalButtons}>
-                                    <TouchableOpacity
-                                        style={[styles.modalBtn, { backgroundColor: "#D91339" }]}
-                                        onPress={addCard}
-                                    >
-                                        <Text style={styles.modalBtnText}>Save</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={[styles.modalBtn, { backgroundColor: "#ccc" }]}
-                                        onPress={() => setModalVisible(false)}
-                                    >
-                                        <Text style={[styles.modalBtnText, { color: "#333" }]}>Cancel</Text>
-                                    </TouchableOpacity>
-                                </View>
+                                )}
                             </View>
-                        </TouchableWithoutFeedback>
-                    </View>
-                </TouchableWithoutFeedback>
-            </Modal>
-        </View>
+
+                            <Text style={styles.cardHolder}>Card Holder: {card.holder}</Text>
+                            <Text style={styles.expiry}>Expiry: {card.expiry}</Text>
+
+                            <View style={styles.cardActions}>
+                                <TouchableOpacity style={styles.editBtn}>
+                                    <Feather name="edit" size={16} color="#fff" />
+                                    <Text style={styles.editText}>Edit</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.deleteBtn}>
+                                    <Feather name="trash-2" size={16} color="#D91339" />
+                                    <Text style={styles.deleteText}>Delete</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    ))}
+
+                    <TouchableOpacity style={styles.addButton} onPress={() => setModalVisible(true)}>
+                        <Ionicons name="add-circle-outline" size={22} color="#fff" />
+                        <Text style={styles.addButtonText}>Add New Card</Text>
+                    </TouchableOpacity>
+                </ScrollView>
+
+                <Modal
+                    transparent
+                    visible={modalVisible}
+                    animationType="fade"
+                    onRequestClose={() => setModalVisible(false)}
+                >
+                    <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+                        <View style={styles.modalOverlay}>
+                            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                                <View style={styles.modalContainer}>
+                                    <Text style={styles.modalTitle}>Add New Payment Method</Text>
+                                    <Text style={styles.modalSubtitle}>
+                                        Enter your card details below. All fields are required.
+                                    </Text>
+
+                                    <Text style={styles.label}>Card Type</Text>
+                                    <TextInput
+                                        placeholder="Visa, MasterCard"
+                                        style={styles.input}
+                                        value={newCard.type}
+                                        onChangeText={(text) => setNewCard({ ...newCard, type: text })}
+                                    />
+
+                                    <Text style={styles.label}>Card Number</Text>
+                                    <TextInput
+                                        placeholder="1234 5678 9012 3456"
+                                        style={styles.input}
+                                        value={newCard.number}
+                                        onChangeText={(text) => setNewCard({ ...newCard, number: text })}
+                                        keyboardType="number-pad"
+                                    />
+
+                                    <View style={{ flexDirection: "row", gap: 10 }}>
+                                        <View style={{ flex: 1 }}>
+                                            <Text style={styles.label}>Expiry Date</Text>
+                                            <TextInput
+                                                placeholder="MM/YY"
+                                                style={styles.input}
+                                                value={newCard.expiry}
+                                                onChangeText={(text) => setNewCard({ ...newCard, expiry: text })}
+                                                keyboardType="number-pad"
+                                            />
+                                        </View>
+                                        <View style={{ flex: 1 }}>
+                                            <Text style={styles.label}>CVV</Text>
+                                            <TextInput
+                                                placeholder="123"
+                                                style={styles.input}
+                                                value={newCard.cvv}
+                                                onChangeText={(text) => setNewCard({ ...newCard, cvv: text })}
+                                                keyboardType="number-pad"
+                                            />
+                                        </View>
+                                    </View>
+
+                                    <Text style={styles.label}>Card Holder Name</Text>
+                                    <TextInput
+                                        placeholder="John Doe"
+                                        style={styles.input}
+                                        value={newCard.holder}
+                                        onChangeText={(text) => setNewCard({ ...newCard, holder: text })}
+                                    />
+
+                                    <View style={styles.modalButtons}>
+                                        <TouchableOpacity
+                                            style={[styles.modalBtn, { backgroundColor: "#D91339" }]}
+                                            onPress={addCard}
+                                        >
+                                            <Text style={styles.modalBtnText}>Save</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            style={[styles.modalBtn, { backgroundColor: "#ccc" }]}
+                                            onPress={() => setModalVisible(false)}
+                                        >
+                                            <Text style={[styles.modalBtnText, { color: "#333" }]}>Cancel</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </Modal>
+            </View>
+        </ThemedView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: "#f8f8f8", paddingTop: 50 },
+    container: { flex: 1, backgroundColor: "#f8f8f8", paddingTop: 20 },
     scrollContainer: { padding: 20 },
     title: { fontSize: 26, fontWeight: "700", color: "#D91339", marginBottom: 20 },
     card: {

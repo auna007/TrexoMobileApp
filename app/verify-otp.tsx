@@ -11,6 +11,7 @@ import {
     Platform,
 } from "react-native";
 import { useRouter } from "expo-router";
+import ThemedView from "./components/ThemedView";
 
 const VerifyOTP = () => {
     const [otp, setOtp] = useState("");
@@ -40,44 +41,46 @@ const VerifyOTP = () => {
     };
 
     return (
-        <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : undefined}
-            style={{ flex: 1 }}
-        >
-            <ScrollView contentContainerStyle={styles.container}>
-                <Text style={styles.title}>Verify OTP</Text>
-                <Text style={styles.subtitle}>
-                    Enter the 4-digit code sent to your email or phone number
-                </Text>
-
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter OTP"
-                    placeholderTextColor="#9CA3AF"
-                    keyboardType="number-pad"
-                    maxLength={4}
-                    value={otp}
-                    onChangeText={setOtp}
-                />
-
-                <TouchableOpacity
-                    style={[styles.button, loading && { opacity: 0.7 }]}
-                    onPress={handleVerify}
-                    disabled={loading}
-                >
-                    <Text style={styles.buttonText}>
-                        {loading ? "Verifying..." : "Verify OTP"}
+        <ThemedView>
+           <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : undefined}
+                style={{ flex: 1 }}
+            >
+                <ScrollView contentContainerStyle={styles.container}>
+                    <Text style={styles.title}>Verify OTP</Text>
+                    <Text style={styles.subtitle}>
+                        Enter the 4-digit code sent to your email or phone number
                     </Text>
-                </TouchableOpacity>
 
-                <Text style={styles.resendText}>
-                    Didn't receive the code?{" "}
-                    <Text style={styles.resendLink} onPress={() => Alert.alert("Info", "OTP resent!")}>
-                        Resend
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Enter OTP"
+                        placeholderTextColor="#9CA3AF"
+                        keyboardType="number-pad"
+                        maxLength={4}
+                        value={otp}
+                        onChangeText={setOtp}
+                    />
+
+                    <TouchableOpacity
+                        style={[styles.button, loading && { opacity: 0.7 }]}
+                        onPress={handleVerify}
+                        disabled={loading}
+                    >
+                        <Text style={styles.buttonText}>
+                            {loading ? "Verifying..." : "Verify OTP"}
+                        </Text>
+                    </TouchableOpacity>
+
+                    <Text style={styles.resendText}>
+                        Didn't receive the code?{" "}
+                        <Text style={styles.resendLink} onPress={() => Alert.alert("Info", "OTP resent!")}>
+                            Resend
+                        </Text>
                     </Text>
-                </Text>
-            </ScrollView>
-        </KeyboardAvoidingView>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </ThemedView>
     );
 };
 

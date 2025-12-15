@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router"; // router for navigation
+import ThemedView from "../components/ThemedView";
 
 const trending = [
     { id: 1, image: require("@/assets/images/trending-1.png"), name: "Bluetooth Speaker" },
@@ -95,81 +96,83 @@ const Transactions = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>My Orders</Text>
+        <ThemedView>
+            <View style={styles.container}>
+                <Text style={styles.title}>My Orders</Text>
 
-            <View style={styles.searchBox}>
-                <Ionicons name="search" size={18} color="#777" />
-                <TextInput
-                    placeholder="Search orders"
-                    placeholderTextColor="#999"
-                    style={styles.searchInput}
-                    value={search}
-                    onChangeText={setSearch}
-                />
-            </View>
+                <View style={styles.searchBox}>
+                    <Ionicons name="search" size={18} color="#777" />
+                    <TextInput
+                        placeholder="Search orders"
+                        placeholderTextColor="#999"
+                        style={styles.searchInput}
+                        value={search}
+                        onChangeText={setSearch}
+                    />
+                </View>
 
-            <View style={styles.tabsRow}>
-                {tabs.map((tab) => (
-                    <TouchableOpacity
-                        key={tab}
-                        style={[styles.tab, filter === tab && styles.activeTab]}
-                        onPress={() => { setFilter(tab); setVisibleCount(4); }}
-                    >
-                        <Text style={[styles.tabText, filter === tab && styles.activeTabText]}>{tab}</Text>
-                    </TouchableOpacity>
-                ))}
-            </View>
-
-            <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 60 }} onScrollEndDrag={loadMore}>
-                {visibleOrders.length === 0 && (
-                    <View style={styles.emptyState}>
-                        <Ionicons name="file-tray-outline" size={70} color="#bbb" />
-                        <Text style={styles.emptyText}>No orders found</Text>
-                    </View>
-                )}
-
-                {visibleOrders.map((order) => {
-                    const firstItem = products.find((p) => p.id === order.items[0].productId);
-                    return (
+                <View style={styles.tabsRow}>
+                    {tabs.map((tab) => (
                         <TouchableOpacity
-                            key={order.id}
-                            onPress={() => router.push(`/order-detail/${order.id}`)}
+                            key={tab}
+                            style={[styles.tab, filter === tab && styles.activeTab]}
+                            onPress={() => { setFilter(tab); setVisibleCount(4); }}
                         >
-                            <Animated.View style={[styles.card, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
-                                <View style={styles.leftRow}>
-                                    {firstItem && <Image source={firstItem.image} style={styles.productImage} />}
-                                    <View style={{ marginLeft: 12 }}>
-                                        <Text style={styles.txTitle}>
-                                            {order.items.map(i => {
-                                                const prod = products.find(p => p.id === i.productId);
-                                                return `${prod?.name}${i.quantity > 1 ? ` x${i.quantity}` : ""}`;
-                                            }).join(", ")}
-                                        </Text>
-                                        <Text style={styles.txDate}>Order ID: {order.orderNumber}</Text>
-                                        <Text style={styles.txDate}>{order.date}</Text>
-                                    </View>
-                                </View>
-
-                                <View style={styles.rightRow}>
-                                    <Text style={styles.txAmount}>{order.total}</Text>
-                                    <View style={[styles.statusBadge, { backgroundColor: getStatusColor(order.status) + "22" }]}>
-                                        <Text style={[styles.statusText, { color: getStatusColor(order.status) }]}>{order.status}</Text>
-                                    </View>
-                                </View>
-                            </Animated.View>
+                            <Text style={[styles.tabText, filter === tab && styles.activeTabText]}>{tab}</Text>
                         </TouchableOpacity>
-                    );
-                })}
+                    ))}
+                </View>
 
-                {loadingMore && <ActivityIndicator size="small" color="#D91339" style={{ marginTop: 15 }} />}
-            </ScrollView>
-        </View>
+                <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 60 }} onScrollEndDrag={loadMore}>
+                    {visibleOrders.length === 0 && (
+                        <View style={styles.emptyState}>
+                            <Ionicons name="file-tray-outline" size={70} color="#bbb" />
+                            <Text style={styles.emptyText}>No orders found</Text>
+                        </View>
+                    )}
+
+                    {visibleOrders.map((order) => {
+                        const firstItem = products.find((p) => p.id === order.items[0].productId);
+                        return (
+                            <TouchableOpacity
+                                key={order.id}
+                                onPress={() => router.push(`/order-detail/${order.id}`)}
+                            >
+                                <Animated.View style={[styles.card, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
+                                    <View style={styles.leftRow}>
+                                        {firstItem && <Image source={firstItem.image} style={styles.productImage} />}
+                                        <View style={{ marginLeft: 12 }}>
+                                            <Text style={styles.txTitle}>
+                                                {order.items.map(i => {
+                                                    const prod = products.find(p => p.id === i.productId);
+                                                    return `${prod?.name}${i.quantity > 1 ? ` x${i.quantity}` : ""}`;
+                                                }).join(", ")}
+                                            </Text>
+                                            <Text style={styles.txDate}>Order ID: {order.orderNumber}</Text>
+                                            <Text style={styles.txDate}>{order.date}</Text>
+                                        </View>
+                                    </View>
+
+                                    <View style={styles.rightRow}>
+                                        <Text style={styles.txAmount}>{order.total}</Text>
+                                        <View style={[styles.statusBadge, { backgroundColor: getStatusColor(order.status) + "22" }]}>
+                                            <Text style={[styles.statusText, { color: getStatusColor(order.status) }]}>{order.status}</Text>
+                                        </View>
+                                    </View>
+                                </Animated.View>
+                            </TouchableOpacity>
+                        );
+                    })}
+
+                    {loadingMore && <ActivityIndicator size="small" color="#D91339" style={{ marginTop: 15 }} />}
+                </ScrollView>
+            </View>
+        </ThemedView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, paddingTop: 60, backgroundColor: "#f8f8f8", paddingHorizontal: 20 },
+    container: { flex: 1, paddingTop: 20, backgroundColor: "#f8f8f8", paddingHorizontal: 20 },
     title: { fontSize: 26, fontWeight: "700", color: "#111", marginBottom: 25 },
     searchBox: { flexDirection: "row", alignItems: "center", backgroundColor: "#fff", borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10, marginBottom: 20, borderWidth: 1, borderColor: "#eee" },
     searchInput: { marginLeft: 8, fontSize: 15, flex: 1, color: "#222" },

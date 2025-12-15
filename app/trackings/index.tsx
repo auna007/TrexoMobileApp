@@ -2,207 +2,257 @@ import React, { useState } from "react";
 import {
     View,
     Text,
+    Alert,
     TextInput,
     TouchableOpacity,
-    StyleSheet,
     ScrollView,
-    ActivityIndicator,
+    Keyboard,
+    TouchableWithoutFeedback,
+    StyleSheet,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
+import ThemedView from "../components/ThemedView";
 
-const orders = [
-    {
-        orderNumber: "ORD-1001",
-        status: "Shipped",
-        estimatedDelivery: "Dec 15, 2025",
-        items: [
-            { name: "Smart Fan", quantity: 1 },
-            { name: "Cool Shades", quantity: 2 },
+type Tab = "Package" | "Location" | "Order";
+
+type LocationHistoryItem = { id: string; status: string; time: string };
+type TrackingData = {
+    packageInfo: { [key: string]: string };
+    currentLocation: { [key: string]: string };
+    userInfo: { [key: string]: string };
+    orderInfo: { [key: string]: string };
+    shippingDetails: { [key: string]: string };
+    paymentInfo: { [key: string]: string };
+    orderItems: { [key: string]: string }[];
+    shippingAddress: { [key: string]: string };
+    locationHistory: LocationHistoryItem[];
+};
+
+const TRACKING_DB: { [key: string]: TrackingData } = {
+    "TRX_0001": {
+        packageInfo: {
+            "Tracking Number": "TRX_0001",
+            "External Number": "N/A",
+            "Type": "International",
+            "Status": "Pending Delivery",
+            "Weight": "N/A kg",
+            "Size": "N/A cmb³",
+            "Amount": "$0.00",
+        },
+        currentLocation: {
+            "Shipping": "N/A",
+            "Current Location": "N/A",
+            "Warehouse": "N/A",
+            "Warehouse Location": "N/A",
+        },
+        userInfo: {
+            "User": "Miss Karlee Mohr",
+            "Phone": "2727838332",
+            "Goods From": "N/A",
+            "Recent Activity": "Created: Dec 13, 2025, 06:42 PM | Last Updated: Dec 13, 2025, 06:42 PM",
+        },
+        orderInfo: {
+            "Order #": "5JKNTDJXBW",
+            "Date": "Dec 13, 2025, 06:42 PM",
+            "Status": "Completed",
+        },
+        shippingDetails: {
+            "Name": "Miss Karlee Mohr",
+            "Phone": "2727838332",
+            "Method": "Sea Cargo",
+        },
+        paymentInfo: {
+            "Total": "NGN 91,264.00",
+            "Method": "Paystack",
+            "Items": "01 items",
+        },
+        orderItems: [
+            {
+                "Item": "New Design Crystal Chandelier Modern Holiday Hotel Lobby Corridor Decoration Lighting Club Pub Ceiling Crystal Pendant Lamp",
+                "SKU": "144",
+                "Price": "NGN 91,264.00 x 1",
+                "Total": "NGN 91,264.00",
+            },
         ],
-        history: [
-            { date: "Dec 10, 2025", action: "Order Placed" },
-            { date: "Dec 11, 2025", action: "Payment Confirmed" },
-            { date: "Dec 12, 2025", action: "Order Shipped" },
+        shippingAddress: {
+            "Address": "No 15 Zannar Bukar Dipcharima Road, Old GRA, Maiduguri, Borno State, Nigeria",
+            "City": "Maduguri",
+            "Postal Code": "600211",
+            "Country": "Nigeria",
+        },
+        locationHistory: [
+            { id: "1", status: "Order Created", time: "Dec 13, 2025, 06:42 PM" },
+            { id: "2", status: "In Transit", time: "Dec 14, 2025, 10:30 AM" },
+            { id: "3", status: "Arrived at Warehouse", time: "Dec 15, 2025, 02:15 PM" },
         ],
     },
-    {
-        orderNumber: "ORD-1002",
-        status: "Pending",
-        estimatedDelivery: "Dec 18, 2025",
-        items: [
-            { name: "Beach Speaker", quantity: 1 },
-        ],
-        history: [
-            { date: "Dec 09, 2025", action: "Order Placed" },
-        ],
-    },
-];
+};
 
 const Tracking = () => {
     const [trackingId, setTrackingId] = useState("");
-    const [order, setOrder] = useState<typeof orders[0] | null>(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
+    const [activeTab, setActiveTab] = useState<Tab>("Package");
+    const [trackingData, setTrackingData] = useState<TrackingData | null>(null);
 
     const handleTrack = () => {
-        setLoading(true);
-        setOrder(null);
-        setError("");
-
-        setTimeout(() => {
-            const found = orders.find(
-                (o) => o.orderNumber.toLowerCase() === trackingId.trim().toLowerCase()
-            );
-            if (found) {
-                setOrder(found);
-            } else {
-                setError("No order found with this tracking ID.");
-            }
-            setLoading(false);
-        }, 800);
+        Keyboard.dismiss();
+        if (!trackingId) return;
+        const data = TRACKING_DB[trackingId];
+        setTrackingData(data || null);
+        if (!data) Alert.alert("Tracking ID not found");
+        setActiveTab("Package");
     };
 
-    return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <Text style={styles.title}>Track Your Order</Text>
-
-            <View style={styles.inputRow}>
-                <TextInput
-                    placeholder="Enter your tracking ID"
-                    placeholderTextColor="#999"
-                    style={styles.input}
-                    value={trackingId}
-                    onChangeText={setTrackingId}
-                />
-                <TouchableOpacity style={styles.button} onPress={handleTrack}>
-                    <Ionicons name="search" size={22} color="#fff" />
-                </TouchableOpacity>
+    const renderLocationItem = (item: LocationHistoryItem) => (
+        <View style={styles.locationRow} key={item.id}>
+            <FontAwesome5 name="map-marker-alt" size={20} color="#D91339" />
+            <View style={{ marginLeft: 12 }}>
+                <Text style={styles.locationStatus}>{item.status}</Text>
+                <Text style={styles.locationTime}>{item.time}</Text>
             </View>
+        </View>
+    );
 
-            {loading && <ActivityIndicator size="large" color="#D91339" style={{ marginTop: 20 }} />}
-
-            {error ? (
-                <Text style={styles.error}>{error}</Text>
-            ) : null}
-
-            {order && (
-                <View style={styles.orderCard}>
-                    <Text style={styles.orderNumber}>Order ID: {order.orderNumber}</Text>
-                    <Text style={styles.status}>Status: {order.status}</Text>
-                    <Text style={styles.estimated}>Estimated Delivery: {order.estimatedDelivery}</Text>
-
-                    <Text style={styles.sectionTitle}>Items:</Text>
-                    {order.items.map((item, index) => (
-                        <Text key={index} style={styles.itemText}>
-                            {item.name} x{item.quantity}
-                        </Text>
-                    ))}
-
-                    <Text style={styles.sectionTitle}>Order History:</Text>
-                    {order.history.map((h, index) => (
-                        <View key={index} style={styles.historyRow}>
-                            <Text style={styles.historyDate}>{h.date}</Text>
-                            <Text style={styles.historyAction}>{h.action}</Text>
-                        </View>
-                    ))}
+    const renderCard = (title: string, data: { [key: string]: string }) => (
+        <View style={styles.card} key={title}>
+            <View style={styles.cardRow}>
+                <MaterialIcons name="inventory" size={24} color="#D91339" />
+                <Text style={styles.cardTitle}>{title}</Text>
+            </View>
+            {Object.keys(data).map((key) => (
+                <View style={styles.cardItem} key={key}>
+                    <Text style={styles.label}>{key}:</Text>
+                    <Text style={styles.value}>{data[key]}</Text>
                 </View>
-            )}
-        </ScrollView>
+            ))}
+        </View>
+    );
+
+    return (
+        <ThemedView style={{ flex: 1 }}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View style={{ flex: 1, backgroundColor: "#fff", padding: 15 }}>
+                    <Text style={styles.title}>Track Your Package</Text>
+
+                    <View style={{ flexDirection: "row", marginBottom: 15 }}>
+                        <TextInput
+                            style={styles.trackingInput}
+                            placeholder="Enter Tracking ID"
+                            value={trackingId}
+                            onChangeText={setTrackingId}
+                            placeholderTextColor="#999"
+                        />
+                        <TouchableOpacity style={styles.trackBtn} onPress={handleTrack}>
+                            <Text style={styles.trackBtnText}>Track Package</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    {trackingData && (
+                        <>
+                            <View style={styles.header}>
+                                <View>
+                                    <Text style={styles.trackingNumber}>Tracking #{trackingId}</Text>
+                                    <Text style={styles.lastUpdated}>
+                                        Last updated: {trackingData.locationHistory[trackingData.locationHistory.length - 1].time}
+                                    </Text>
+                                </View>
+                                <View style={styles.statusContainer}>
+                                    <Ionicons name="time-outline" size={24} color="#fff" />
+                                    <Text style={styles.statusText}>{trackingData.packageInfo["Status"]}</Text>
+                                </View>
+                            </View>
+
+                            <View style={styles.tabRow}>
+                                {["Package Details", "Location History", "Order Details"].map((tabLabel, idx) => {
+                                    const tab: Tab = idx === 0 ? "Package" : idx === 1 ? "Location" : "Order";
+                                    const isActive = activeTab === tab;
+                                    return (
+                                        <TouchableOpacity
+                                            key={tabLabel}
+                                            style={[styles.tabBtn, isActive && styles.activeTabBtn]}
+                                            onPress={() => setActiveTab(tab)}
+                                        >
+                                            <Text style={[styles.tabText, isActive && styles.activeTabText]}>
+                                                {tabLabel}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    );
+                                })}
+                            </View>
+
+                            <ScrollView
+                                style={{ flex: 1 }}
+                                contentContainerStyle={{ paddingBottom: 20 }}
+                                keyboardShouldPersistTaps="handled"
+                            >
+                                {activeTab === "Package" && (
+                                    <>
+                                        {renderCard("Package Information", trackingData.packageInfo)}
+                                        {renderCard("Current Location", trackingData.currentLocation)}
+                                        {renderCard("User Information", trackingData.userInfo)}
+                                    </>
+                                )}
+
+                                {activeTab === "Order" && (
+                                    <>
+                                        {renderCard("Order Information", trackingData.orderInfo)}
+                                        {renderCard("Shipping Details", trackingData.shippingDetails)}
+                                        {renderCard("Payment Information", trackingData.paymentInfo)}
+                                        {trackingData.orderItems.map((item, idx) => (
+                                            <View style={styles.card} key={idx}>
+                                                <View style={styles.cardRow}>
+                                                    <Ionicons name="cube-outline" size={24} color="#D91339" />
+                                                    <Text style={styles.cardTitle}>Order Item {idx + 1}</Text>
+                                                </View>
+                                                {Object.keys(item).map((key) => (
+                                                    <View style={styles.cardItem} key={key}>
+                                                        <Text style={styles.label}>{key}:</Text>
+                                                        <Text style={styles.value}>{item[key]}</Text>
+                                                    </View>
+                                                ))}
+                                            </View>
+                                        ))}
+                                        {renderCard("Shipping Address", trackingData.shippingAddress)}
+                                    </>
+                                )}
+
+                                {activeTab === "Location" && (
+                                    <>
+                                        {trackingData.locationHistory.map(renderLocationItem)}
+                                    </>
+                                )}
+                            </ScrollView>
+                        </>
+                    )}
+                </View>
+            </TouchableWithoutFeedback>
+        </ThemedView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 20,
-        paddingTop: 60,
-        backgroundColor: "#f8f8f8",
-        flexGrow: 1,
-    },
-    title: {
-        fontSize: 26,
-        fontWeight: "700",
-        color: "#D91339",
-        marginBottom: 30,
-    },
-    inputRow: {
-        flexDirection: "row",
-        marginBottom: 20,
-    },
-    input: {
-        flex: 1,
-        backgroundColor: "#fff",
-        borderRadius: 10,
-        paddingHorizontal: 15,
-        paddingVertical: 12,
-        fontSize: 16,
-        borderWidth: 1,
-        borderColor: "#eee",
-        marginRight: 10,
-    },
-    button: {
-        backgroundColor: "#D91339",
-        padding: 12,
-        borderRadius: 10,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    error: {
-        color: "#dc2626",
-        fontWeight: "600",
-        textAlign: "center",
-        marginTop: 20,
-    },
-    orderCard: {
-        backgroundColor: "#fff",
-        padding: 16,
-        borderRadius: 14,
-        shadowColor: "#000",
-        shadowOpacity: 0.05,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 4,
-        elevation: 2,
-        marginTop: 20,
-    },
-    orderNumber: {
-        fontSize: 16,
-        fontWeight: "700",
-        marginBottom: 6,
-    },
-    status: {
-        fontSize: 14,
-        marginBottom: 6,
-        color: "#16a34a",
-    },
-    estimated: {
-        fontSize: 14,
-        marginBottom: 12,
-        color: "#555",
-    },
-    sectionTitle: {
-        fontSize: 15,
-        fontWeight: "700",
-        marginTop: 10,
-        marginBottom: 6,
-        color: "#D91339",
-    },
-    itemText: {
-        fontSize: 14,
-        marginBottom: 4,
-    },
-    historyRow: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginBottom: 4,
-    },
-    historyDate: {
-        fontSize: 13,
-        color: "#777",
-    },
-    historyAction: {
-        fontSize: 13,
-        fontWeight: "600",
-        color: "#111",
-    },
+    title: { fontSize: 22, fontWeight: "700", marginBottom: 15, textAlign: "center", color: "#D91339" },
+    trackingInput: { flex: 1, backgroundColor: "#fff", padding: 12, borderRadius: 12, fontSize: 16, borderColor: "#d9d9d9", borderWidth: 1 },
+    trackBtn: { marginLeft: 10, backgroundColor: "#D91339", paddingHorizontal: 20, borderRadius: 12, justifyContent: "center" },
+    trackBtnText: { color: "#fff", fontWeight: "600" },
+    header: { backgroundColor: "#D91339", padding: 20, borderRadius: 12, marginBottom: 15 },
+    trackingNumber: { color: "#fff", fontWeight: "700", fontSize: 16 },
+    lastUpdated: { color: "#fff", marginTop: 4 },
+    statusContainer: { flexDirection: "row", alignItems: "center", marginTop: 10, gap: 8 },
+    statusText: { color: "#fff", fontWeight: "600" },
+    tabRow: { flexDirection: "row", marginBottom: 15, justifyContent: "space-between" },
+    tabBtn: { flex: 1, paddingVertical: 10, backgroundColor: "#fff", borderRadius: 8, marginHorizontal: 4, alignItems: "center" },
+    activeTabBtn: { backgroundColor: "#D91339" },
+    tabText: { color: "#333", fontWeight: "600" },
+    activeTabText: { color: "#fff" },
+    card: { backgroundColor: "#fff", borderRadius: 12, padding: 15, marginBottom: 12, shadowColor: "#000", shadowOpacity: 0.05, shadowOffset: { width: 0, height: 2 }, shadowRadius: 6, elevation: 3 },
+    cardRow: { flexDirection: "row", alignItems: "center", marginBottom: 10, gap: 8 },
+    cardTitle: { fontWeight: "700", fontSize: 16, color: "#111" },
+    cardItem: { flexDirection: "row", justifyContent: "space-between", marginVertical: 4 },
+    label: { fontWeight: "500", color: "#555", flex: 1 },
+    value: { fontWeight: "600", color: "#111", flex: 1, textAlign: "right" },
+    locationRow: { flexDirection: "row", alignItems: "flex-start", backgroundColor: "#fff", padding: 12, borderRadius: 12, marginBottom: 10 },
+    locationStatus: { fontWeight: "600", color: "#111" },
+    locationTime: { color: "#666", fontSize: 12 },
 });
 
 export default Tracking;

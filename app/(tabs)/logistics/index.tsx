@@ -11,6 +11,7 @@ import {
     Keyboard,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import ThemedView from "@/app/components/ThemedView";
 
 const Logistics = () => {
     const [activeTab, setActiveTab] = useState<"local" | "foreign">("local");
@@ -90,153 +91,155 @@ const Logistics = () => {
     const currentData = activeTab === "local" ? localData : foreignData;
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.title}>Trexo Logistics 🚚</Text>
-                <TouchableOpacity style={styles.refreshBtn}>
-                    <Ionicons name="refresh" size={20} color="#fff" />
-                </TouchableOpacity>
-            </View>
+        <ThemedView>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Text style={styles.title}>Trexo Logistics 🚚</Text>
+                    <TouchableOpacity style={styles.refreshBtn}>
+                        <Ionicons name="refresh" size={20} color="#fff" />
+                    </TouchableOpacity>
+                </View>
 
-            <View style={styles.tabContainer}>
-                <TouchableOpacity
-                    style={[styles.tab, activeTab === "local" && styles.activeTab]}
-                    onPress={() => setActiveTab("local")}
-                >
-                    <Text
-                        style={[styles.tabText, activeTab === "local" && styles.activeTabText]}
+                <View style={styles.tabContainer}>
+                    <TouchableOpacity
+                        style={[styles.tab, activeTab === "local" && styles.activeTab]}
+                        onPress={() => setActiveTab("local")}
                     >
-                        Local Logistics
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[styles.tab, activeTab === "foreign" && styles.activeTab]}
-                    onPress={() => setActiveTab("foreign")}
-                >
-                    <Text
-                        style={[styles.tabText, activeTab === "foreign" && styles.activeTabText]}
+                        <Text
+                            style={[styles.tabText, activeTab === "local" && styles.activeTabText]}
+                        >
+                            Local Logistics
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.tab, activeTab === "foreign" && styles.activeTab]}
+                        onPress={() => setActiveTab("foreign")}
                     >
-                        Foreign Logistics
-                    </Text>
-                </TouchableOpacity>
-            </View>
+                        <Text
+                            style={[styles.tabText, activeTab === "foreign" && styles.activeTabText]}
+                        >
+                            Foreign Logistics
+                        </Text>
+                    </TouchableOpacity>
+                </View>
 
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
-                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-                    <View style={[styles.tableRow, styles.tableHeaderRow]}>
-                        {tableHeaders.map((header, index) => (
-                            <Text key={index} style={[styles.cell, styles.headerCell]}>
-                                {header}
-                            </Text>
-                        ))}
-                    </View>
-
-                    {currentData.map((item) => (
-                        <View key={item.id} style={styles.tableRow}>
-                            <Text style={styles.cell}>{item.customer}</Text>
-                            <Text style={styles.cell}>{item.phone}</Text>
-                            <Text style={styles.cell}>{item.trexoId}</Text>
-                            <Text style={styles.cell}>{item.externalId}</Text>
-                            <Text style={styles.cell}>{item.warehouse}</Text>
-                            <Text style={styles.cell}>{item.type}</Text>
-                            <Text
-                                style={[
-                                    styles.cell,
-                                    item.status === "Delivered"
-                                        ? styles.statusDelivered
-                                        : item.status === "Pending"
-                                        ? styles.statusPending
-                                        : styles.statusInTransit,
-                                ]}
-                            >
-                                {item.status}
-                            </Text>
-                            <Text
-                                style={[
-                                    styles.cell,
-                                    item.payment === "Paid" ? styles.paid : styles.unpaid,
-                                ]}
-                            >
-                                {item.payment}
-                            </Text>
-                            <Text style={styles.cell}>{item.date}</Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
+                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
+                        <View style={[styles.tableRow, styles.tableHeaderRow]}>
+                            {tableHeaders.map((header, index) => (
+                                <Text key={index} style={[styles.cell, styles.headerCell]}>
+                                    {header}
+                                </Text>
+                            ))}
                         </View>
-                    ))}
-                </ScrollView>
-            </ScrollView>
 
-            <TouchableOpacity
-                style={styles.fab}
-                onPress={() => setModalVisible(true)}
-            >
-                <Ionicons name="add" size={32} color="#fff" />
-            </TouchableOpacity>
-
-            <Modal transparent visible={modalVisible} animationType="slide">
-                <TouchableWithoutFeedback onPress={() => { setModalVisible(false); Keyboard.dismiss(); }}>
-                    <View style={styles.modalOverlay}>
-                        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                            <View style={styles.modalBox}>
-                                <Text style={styles.modalTitle}>Create Delivery Request</Text>
-
-                                <Text style={styles.label}>Full Name</Text>
-                                <TextInput
-                                    value={fullName}
-                                    onChangeText={setFullName}
-                                    style={styles.input}
-                                />
-
-                                <Text style={styles.label}>Phone Number</Text>
-                                <TextInput
-                                    value={phone}
-                                    onChangeText={setPhone}
-                                    style={styles.input}
-                                    keyboardType="phone-pad"
-                                />
-
-                                <Text style={styles.label}>Tracking ID</Text>
-                                <TextInput
-                                    value={trackingId}
-                                    onChangeText={setTrackingId}
-                                    style={styles.input}
-                                />
-
-                                <Text style={styles.label}>Select Warehouse</Text>
-                                <TextInput
-                                    value={warehouse}
-                                    onChangeText={setWarehouse}
-                                    style={styles.input}
-                                />
-
-                                {activeTab === "foreign" && (
-                                    <>
-                                        <Text style={styles.label}>Shipping Type</Text>
-                                        <TextInput
-                                            value={shippingType}
-                                            onChangeText={setShippingType}
-                                            style={styles.input}
-                                        />
-                                    </>
-                                )}
-
-                                <View style={styles.modalBtnRow}>
-                                    <TouchableOpacity
-                                        style={styles.cancelBtn}
-                                        onPress={() => setModalVisible(false)}
-                                    >
-                                        <Text style={styles.cancelText}>Cancel</Text>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity style={styles.submitBtn}>
-                                        <Text style={styles.submitText}>Submit</Text>
-                                    </TouchableOpacity>
-                                </View>
+                        {currentData.map((item) => (
+                            <View key={item.id} style={styles.tableRow}>
+                                <Text style={styles.cell}>{item.customer}</Text>
+                                <Text style={styles.cell}>{item.phone}</Text>
+                                <Text style={styles.cell}>{item.trexoId}</Text>
+                                <Text style={styles.cell}>{item.externalId}</Text>
+                                <Text style={styles.cell}>{item.warehouse}</Text>
+                                <Text style={styles.cell}>{item.type}</Text>
+                                <Text
+                                    style={[
+                                        styles.cell,
+                                        item.status === "Delivered"
+                                            ? styles.statusDelivered
+                                            : item.status === "Pending"
+                                            ? styles.statusPending
+                                            : styles.statusInTransit,
+                                    ]}
+                                >
+                                    {item.status}
+                                </Text>
+                                <Text
+                                    style={[
+                                        styles.cell,
+                                        item.payment === "Paid" ? styles.paid : styles.unpaid,
+                                    ]}
+                                >
+                                    {item.payment}
+                                </Text>
+                                <Text style={styles.cell}>{item.date}</Text>
                             </View>
-                        </TouchableWithoutFeedback>
-                    </View>
-                </TouchableWithoutFeedback>
-            </Modal>
-        </View>
+                        ))}
+                    </ScrollView>
+                </ScrollView>
+
+                <TouchableOpacity
+                    style={styles.fab}
+                    onPress={() => setModalVisible(true)}
+                >
+                    <Ionicons name="add" size={32} color="#fff" />
+                </TouchableOpacity>
+
+                <Modal transparent visible={modalVisible} animationType="slide">
+                    <TouchableWithoutFeedback onPress={() => { setModalVisible(false); Keyboard.dismiss(); }}>
+                        <View style={styles.modalOverlay}>
+                            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                                <View style={styles.modalBox}>
+                                    <Text style={styles.modalTitle}>Create Delivery Request</Text>
+
+                                    <Text style={styles.label}>Full Name</Text>
+                                    <TextInput
+                                        value={fullName}
+                                        onChangeText={setFullName}
+                                        style={styles.input}
+                                    />
+
+                                    <Text style={styles.label}>Phone Number</Text>
+                                    <TextInput
+                                        value={phone}
+                                        onChangeText={setPhone}
+                                        style={styles.input}
+                                        keyboardType="phone-pad"
+                                    />
+
+                                    <Text style={styles.label}>Tracking ID</Text>
+                                    <TextInput
+                                        value={trackingId}
+                                        onChangeText={setTrackingId}
+                                        style={styles.input}
+                                    />
+
+                                    <Text style={styles.label}>Select Warehouse</Text>
+                                    <TextInput
+                                        value={warehouse}
+                                        onChangeText={setWarehouse}
+                                        style={styles.input}
+                                    />
+
+                                    {activeTab === "foreign" && (
+                                        <>
+                                            <Text style={styles.label}>Shipping Type</Text>
+                                            <TextInput
+                                                value={shippingType}
+                                                onChangeText={setShippingType}
+                                                style={styles.input}
+                                            />
+                                        </>
+                                    )}
+
+                                    <View style={styles.modalBtnRow}>
+                                        <TouchableOpacity
+                                            style={styles.cancelBtn}
+                                            onPress={() => setModalVisible(false)}
+                                        >
+                                            <Text style={styles.cancelText}>Cancel</Text>
+                                        </TouchableOpacity>
+
+                                        <TouchableOpacity style={styles.submitBtn}>
+                                            <Text style={styles.submitText}>Submit</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </Modal>
+            </View>
+        </ThemedView>
     );
 };
 
@@ -244,7 +247,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#fff",
-        paddingTop: 50,
+        paddingTop: 20,
         paddingHorizontal: 10,
     },
     header: {

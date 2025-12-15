@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
+import ThemedView from "../components/ThemedView";
 
 const Wishlist = () => {
     const wishlistItems = [
@@ -25,50 +26,53 @@ const Wishlist = () => {
     ];
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <Text style={styles.title}>My Wishlist</Text>
+        <ThemedView style={{ flex: 1 }}>
+            <ScrollView contentContainerStyle={styles.container}>
+                <Text style={styles.title}>My Wishlist</Text>
 
-            {wishlistItems.length === 0 ? (
-                <View style={styles.emptyContainer}>
-                    <Ionicons name="heart-outline" size={80} color="#ccc" />
-                    <Text style={styles.emptyText}>Your wishlist is empty</Text>
-                </View>
-            ) : (
-                wishlistItems.map((item) => (
-                    <View key={item.id} style={styles.card}>
-                        <Image source={item.image} style={styles.image} />
+                {wishlistItems.length === 0 ? (
+                    <View style={styles.emptyContainer}>
+                        <Ionicons name="heart-outline" size={80} color="#ccc" />
+                        <Text style={styles.emptyText}>Your wishlist is empty</Text>
+                    </View>
+                ) : (
+                    wishlistItems.map((item) => (
+                        <View key={item.id} style={styles.card}>
+                            <Image source={item.image} style={styles.image} />
 
-                        <View style={styles.info}>
-                            <Text style={styles.name}>{item.name}</Text>
-                            <Text style={styles.price}>{item.price}</Text>
+                            <View style={styles.info}>
+                                <Text style={styles.name}>{item.name}</Text>
+                                <Text style={styles.price}>{item.price}</Text>
 
-                            <View style={styles.actions}>
-                                <TouchableOpacity style={styles.moveBtn}>
-                                    <Feather name="shopping-cart" size={16} color="#fff" />
-                                    <Text style={styles.moveText}>Add to Cart</Text>
-                                </TouchableOpacity>
+                                <View style={styles.actions}>
+                                    <TouchableOpacity style={styles.moveBtn}>
+                                        <Feather name="shopping-cart" size={16} color="#fff" />
+                                        <Text style={styles.moveText}>Add to Cart</Text>
+                                    </TouchableOpacity>
 
-                                <TouchableOpacity style={styles.removeBtn}>
-                                    <Feather name="trash-2" size={16} color="#D91339" />
-                                    <Text style={styles.removeText}>Remove</Text>
-                                </TouchableOpacity>
+                                    <TouchableOpacity style={styles.removeBtn}>
+                                        <Feather name="trash-2" size={16} color="#D91339" />
+                                        <Text style={styles.removeText}>Remove</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
-                    </View>
-                ))
-            )}
+                    ))
+                )}
 
-            <View style={{ height: 40 }} />
-        </ScrollView>
+                <View style={{ height: 40 }} />
+            </ScrollView>
+        </ThemedView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 60,
         paddingHorizontal: 20,
+        paddingTop: 20,
         backgroundColor: "#f8f8f8",
         paddingBottom: 40,
+        flexGrow: 1,
     },
     title: {
         fontSize: 28,
