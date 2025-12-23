@@ -14,6 +14,7 @@ import {
     TouchableWithoutFeedback,
     View,
 } from "react-native";
+import ThemedView from "./components/ThemedView";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -31,45 +32,46 @@ const Login = () => {
     };
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <ScrollView
-                contentContainerStyle={styles.container}
-                keyboardShouldPersistTaps="handled"
-            >
-                <Image
-                    source={require("@/assets/images/logo.png")}
-                    style={styles.logo}
-                />
+        <ThemedView>
+           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <ScrollView
+                    contentContainerStyle={styles.container}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    <Image
+                        source={require("@/assets/images/logo.png")}
+                        style={styles.logo}
+                    />
 
-                <Text style={styles.title}>Login</Text>
-                <Text style={styles.subtitle}>Please sign in to continue</Text>
+                    <Text style={styles.title}>Login</Text>
+                    <Text style={styles.subtitle}>Please sign in to continue</Text>
 
-                <Text style={styles.signupText}>
-                    Don't have an account?{" "}
-                    <Text
-                        style={styles.signupLink}
-                        onPress={() => router.push("/register")}
-                    >
-                        Signup here
+                    <Text style={styles.signupText}>
+                        Don't have an account?{" "}
+                        <Text
+                            style={styles.signupLink}
+                            onPress={() => router.push("/register")}
+                        >
+                            Signup here
+                        </Text>
                     </Text>
-                </Text>
 
-                <TextInput
-                    style={styles.input}
-                    placeholder="Email"
-                    placeholderTextColor="#9CA3AF"
-                    keyboardType="email-address"
-                    value={email}
-                    onChangeText={setEmail}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Password"
-                    placeholderTextColor="#9CA3AF"
-                    secureTextEntry
-                    value={password}
-                    onChangeText={setPassword}
-                />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Email"
+                        placeholderTextColor="#9CA3AF"
+                        keyboardType="email-address"
+                        value={email}
+                        onChangeText={setEmail}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Password"
+                        placeholderTextColor="#9CA3AF"
+                        secureTextEntry
+                        value={password}
+                        onChangeText={setPassword}
+                    />
 
                 <TouchableOpacity
                 style={[
@@ -87,11 +89,11 @@ const Login = () => {
                 )}
                 </TouchableOpacity>
 
-                <View style={styles.dividerContainer}>
-                    <View style={styles.divider} />
-                    <Text style={styles.dividerText}>Or</Text>
-                    <View style={styles.divider} />
-                </View>
+                    <View style={styles.dividerContainer}>
+                        <View style={styles.divider} />
+                        <Text style={styles.dividerText}>Or</Text>
+                        <View style={styles.divider} />
+                    </View>
 
                 <TouchableOpacity 
                     style={[
@@ -111,9 +113,10 @@ const Login = () => {
                     <Text style={styles.googleText}>Continue with Google</Text>
                 </TouchableOpacity>
 
-                <Text style={styles.helpText}>Get help signing in</Text>
-            </ScrollView>
-        </TouchableWithoutFeedback>
+                    <Text style={styles.helpText}>Get help signing in</Text>
+                </ScrollView>
+            </TouchableWithoutFeedback>
+        </ThemedView>
     );
 };
 
@@ -176,6 +179,16 @@ const styles = StyleSheet.create({
     buttonText: {
         color: "#fff",
         fontSize: 16,
+        fontWeight: "bold",
+    },
+    termsText: {
+        color: "#9CA3AF",
+        fontSize: 13,
+        textAlign: "center",
+        marginVertical: 15,
+    },
+    termsLink: {
+        color: "#ffc0cb",
         fontWeight: "bold",
     },
     dividerContainer: {

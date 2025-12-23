@@ -6,17 +6,26 @@ import {
     TouchableOpacity,
 } from "react-native";
 import { Feather, MaterialIcons, FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+
+type Category = {
+    name: string;
+    slug: string;
+    icon: React.ReactNode;
+};
 
 const TrendingCategories = () => {
-    const categories = [
-        { name: "Electronics", icon: <MaterialIcons name="devices" size={20} color="#D91339" /> },
-        { name: "Fashion", icon: <Ionicons name="shirt-outline" size={20} color="#D91339" /> },
-        { name: "Home & Kitchen", icon: <MaterialIcons name="kitchen" size={20} color="#D91339" /> },
-        { name: "Gadgets", icon: <FontAwesome5 name="mobile-alt" size={18} color="#D91339" /> },
-        { name: "Accessories", icon: <Feather name="watch" size={20} color="#D91339" /> },
-        { name: "Beauty", icon: <Ionicons name="rose-outline" size={20} color="#D91339" /> },
-        { name: "Automotive", icon: <Ionicons name="car-outline" size={20} color="#D91339" /> },
-        { name: "Toys", icon: <Ionicons name="game-controller-outline" size={20} color="#D91339" /> },
+    const router = useRouter();
+
+    const categories: Category[] = [
+        { name: "Electronics", slug: "electronics", icon: <MaterialIcons name="devices" size={20} color="#D91339" /> },
+        { name: "Fashion", slug: "fashion", icon: <Ionicons name="shirt-outline" size={20} color="#D91339" /> },
+        { name: "Home & Kitchen", slug: "home-kitchen", icon: <MaterialIcons name="kitchen" size={20} color="#D91339" /> },
+        { name: "Gadgets", slug: "gadgets", icon: <FontAwesome5 name="mobile-alt" size={18} color="#D91339" /> },
+        { name: "Accessories", slug: "accessories", icon: <Feather name="watch" size={20} color="#D91339" /> },
+        { name: "Beauty", slug: "beauty", icon: <Ionicons name="rose-outline" size={20} color="#D91339" /> },
+        { name: "Automotive", slug: "automotive", icon: <Ionicons name="car-outline" size={20} color="#D91339" /> },
+        { name: "Toys", slug: "toys", icon: <Ionicons name="game-controller-outline" size={20} color="#D91339" /> },
     ];
 
     return (
@@ -24,7 +33,12 @@ const TrendingCategories = () => {
             <Text style={styles.title}>🔥 Trending Categories</Text>
             <View style={styles.categoryGrid}>
                 {categories.map((item, index) => (
-                    <TouchableOpacity key={index} activeOpacity={0.85} style={styles.categoryCard}>
+                    <TouchableOpacity
+                        key={index}
+                        activeOpacity={0.85}
+                        style={styles.categoryCard}
+                        onPress={() => router.push(`/categories/${item.slug}`)}
+                    >
                         <View style={styles.iconContainer}>{item.icon}</View>
                         <Text style={styles.categoryText}>{item.name}</Text>
                     </TouchableOpacity>

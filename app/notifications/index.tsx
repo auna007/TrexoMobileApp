@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Switch, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import ThemedView from "../components/ThemedView";
 
 const Notifications = () => {
     const [pushEnabled, setPushEnabled] = useState(true);
@@ -9,87 +10,89 @@ const Notifications = () => {
     const [securityAlerts, setSecurityAlerts] = useState(true);
 
     return (
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-            <Text style={styles.header}>Notifications</Text>
+        <ThemedView>
+            <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+                <Text style={styles.header}>Notifications</Text>
 
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>General</Text>
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>General</Text>
 
-                <View style={styles.option}>
-                    <View style={styles.labelContainer}>
-                        <Ionicons name="notifications-outline" size={22} color="#D91339" />
-                        <Text style={styles.optionText}>Push Notifications</Text>
+                    <View style={styles.option}>
+                        <View style={styles.labelContainer}>
+                            <Ionicons name="notifications-outline" size={22} color="#D91339" />
+                            <Text style={styles.optionText}>Push Notifications</Text>
+                        </View>
+                        <Switch
+                            value={pushEnabled}
+                            onValueChange={setPushEnabled}
+                            trackColor={{ true: "#D91339", false: "#ccc" }}
+                            thumbColor={pushEnabled ? "#fff" : "#eee"}
+                        />
                     </View>
-                    <Switch
-                        value={pushEnabled}
-                        onValueChange={setPushEnabled}
-                        trackColor={{ true: "#D91339", false: "#ccc" }}
-                        thumbColor={pushEnabled ? "#fff" : "#eee"}
-                    />
                 </View>
-            </View>
 
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Orders</Text>
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Orders</Text>
 
-                <View style={styles.option}>
-                    <View style={styles.labelContainer}>
-                        <Ionicons name="bag-outline" size={22} color="#D91339" />
-                        <Text style={styles.optionText}>Order Updates</Text>
+                    <View style={styles.option}>
+                        <View style={styles.labelContainer}>
+                            <Ionicons name="bag-outline" size={22} color="#D91339" />
+                            <Text style={styles.optionText}>Order Updates</Text>
+                        </View>
+                        <Switch
+                            value={orderUpdates}
+                            onValueChange={setOrderUpdates}
+                            trackColor={{ true: "#D91339", false: "#ccc" }}
+                            thumbColor={orderUpdates ? "#fff" : "#eee"}
+                        />
                     </View>
-                    <Switch
-                        value={orderUpdates}
-                        onValueChange={setOrderUpdates}
-                        trackColor={{ true: "#D91339", false: "#ccc" }}
-                        thumbColor={orderUpdates ? "#fff" : "#eee"}
-                    />
                 </View>
-            </View>
 
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Promotions</Text>
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Promotions</Text>
 
-                <View style={styles.option}>
-                    <View style={styles.labelContainer}>
-                        <Ionicons name="gift-outline" size={22} color="#D91339" />
-                        <Text style={styles.optionText}>Discounts & Offers</Text>
+                    <View style={styles.option}>
+                        <View style={styles.labelContainer}>
+                            <Ionicons name="gift-outline" size={22} color="#D91339" />
+                            <Text style={styles.optionText}>Discounts & Offers</Text>
+                        </View>
+                        <Switch
+                            value={promotions}
+                            onValueChange={setPromotions}
+                            trackColor={{ true: "#D91339", false: "#ccc" }}
+                            thumbColor={promotions ? "#fff" : "#eee"}
+                        />
                     </View>
-                    <Switch
-                        value={promotions}
-                        onValueChange={setPromotions}
-                        trackColor={{ true: "#D91339", false: "#ccc" }}
-                        thumbColor={promotions ? "#fff" : "#eee"}
-                    />
                 </View>
-            </View>
 
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Security Alerts</Text>
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Security Alerts</Text>
 
-                <View style={styles.option}>
-                    <View style={styles.labelContainer}>
-                        <Ionicons name="shield-checkmark-outline" size={22} color="#D91339" />
-                        <Text style={styles.optionText}>Login Alerts</Text>
+                    <View style={styles.option}>
+                        <View style={styles.labelContainer}>
+                            <Ionicons name="shield-checkmark-outline" size={22} color="#D91339" />
+                            <Text style={styles.optionText}>Login Alerts</Text>
+                        </View>
+                        <Switch
+                            value={securityAlerts}
+                            onValueChange={setSecurityAlerts}
+                            trackColor={{ true: "#D91339", false: "#ccc" }}
+                            thumbColor={securityAlerts ? "#fff" : "#eee"}
+                        />
                     </View>
-                    <Switch
-                        value={securityAlerts}
-                        onValueChange={setSecurityAlerts}
-                        trackColor={{ true: "#D91339", false: "#ccc" }}
-                        thumbColor={securityAlerts ? "#fff" : "#eee"}
-                    />
+
+                    <View style={styles.hintBox}>
+                        <Ionicons name="information-circle-outline" size={18} color="#555" />
+                        <Text style={styles.hintText}>
+                            Security alerts help protect your account by notifying you of unusual
+                            activity.
+                        </Text>
+                    </View>
                 </View>
 
-                <View style={styles.hintBox}>
-                    <Ionicons name="information-circle-outline" size={18} color="#555" />
-                    <Text style={styles.hintText}>
-                        Security alerts help protect your account by notifying you of unusual
-                        activity.
-                    </Text>
-                </View>
-            </View>
-
-            <View style={{ height: 80 }} />
-        </ScrollView>
+                <View style={{ height: 80 }} />
+            </ScrollView>
+        </ThemedView>
     );
 };
 
@@ -98,7 +101,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff",
         paddingHorizontal: 18,
-        paddingTop: 55,
+        paddingTop: 20,
     },
     header: {
         fontSize: 26,

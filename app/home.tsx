@@ -151,6 +151,12 @@ const Home = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        padding: 16,
+        paddingInline: 16,
+        backgroundColor: "#fff"
+    },
+    safeArea: {
+        flex: 1,
         backgroundColor: "#fff",
         paddingInline: 16,
     },

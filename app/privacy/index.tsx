@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Switch, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import ThemedView from "../components/ThemedView";
 
 const Privacy = () => {
     const [locationAccess, setLocationAccess] = useState(true);
@@ -9,83 +10,85 @@ const Privacy = () => {
     const [searchHistory, setSearchHistory] = useState(true);
 
     return (
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-            <Text style={styles.header}>Privacy</Text>
+        <ThemedView>
+            <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+                <Text style={styles.header}>Privacy</Text>
 
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Permissions</Text>
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Permissions</Text>
 
-                <View style={styles.option}>
-                    <View style={styles.labelContainer}>
-                        <Ionicons name="location-outline" size={22} color="#D91339" />
-                        <Text style={styles.optionText}>Location Access</Text>
+                    <View style={styles.option}>
+                        <View style={styles.labelContainer}>
+                            <Ionicons name="location-outline" size={22} color="#D91339" />
+                            <Text style={styles.optionText}>Location Access</Text>
+                        </View>
+                        <Switch
+                            value={locationAccess}
+                            onValueChange={setLocationAccess}
+                            trackColor={{ true: "#D91339", false: "#ccc" }}
+                            thumbColor={locationAccess ? "#fff" : "#eee"}
+                        />
                     </View>
-                    <Switch
-                        value={locationAccess}
-                        onValueChange={setLocationAccess}
-                        trackColor={{ true: "#D91339", false: "#ccc" }}
-                        thumbColor={locationAccess ? "#fff" : "#eee"}
-                    />
-                </View>
-            </View>
-
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Data & Personalization</Text>
-
-                <View style={styles.option}>
-                    <View style={styles.labelContainer}>
-                        <Ionicons name="person-circle-outline" size={22} color="#D91339" />
-                        <Text style={styles.optionText}>Personalized Ads</Text>
-                    </View>
-                    <Switch
-                        value={personalizedAds}
-                        onValueChange={setPersonalizedAds}
-                        trackColor={{ true: "#D91339", false: "#ccc" }}
-                        thumbColor={personalizedAds ? "#fff" : "#eee"}
-                    />
                 </View>
 
-                <View style={styles.option}>
-                    <View style={styles.labelContainer}>
-                        <Ionicons name="document-text-outline" size={22} color="#D91339" />
-                        <Text style={styles.optionText}>Allow Data Collection</Text>
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Data & Personalization</Text>
+
+                    <View style={styles.option}>
+                        <View style={styles.labelContainer}>
+                            <Ionicons name="person-circle-outline" size={22} color="#D91339" />
+                            <Text style={styles.optionText}>Personalized Ads</Text>
+                        </View>
+                        <Switch
+                            value={personalizedAds}
+                            onValueChange={setPersonalizedAds}
+                            trackColor={{ true: "#D91339", false: "#ccc" }}
+                            thumbColor={personalizedAds ? "#fff" : "#eee"}
+                        />
                     </View>
-                    <Switch
-                        value={dataCollection}
-                        onValueChange={setDataCollection}
-                        trackColor={{ true: "#D91339", false: "#ccc" }}
-                        thumbColor={dataCollection ? "#fff" : "#eee"}
-                    />
-                </View>
-            </View>
 
-            <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Search & Browsing</Text>
-
-                <View style={styles.option}>
-                    <View style={styles.labelContainer}>
-                        <Ionicons name="search-outline" size={22} color="#D91339" />
-                        <Text style={styles.optionText}>Save Search History</Text>
+                    <View style={styles.option}>
+                        <View style={styles.labelContainer}>
+                            <Ionicons name="document-text-outline" size={22} color="#D91339" />
+                            <Text style={styles.optionText}>Allow Data Collection</Text>
+                        </View>
+                        <Switch
+                            value={dataCollection}
+                            onValueChange={setDataCollection}
+                            trackColor={{ true: "#D91339", false: "#ccc" }}
+                            thumbColor={dataCollection ? "#fff" : "#eee"}
+                        />
                     </View>
-                    <Switch
-                        value={searchHistory}
-                        onValueChange={setSearchHistory}
-                        trackColor={{ true: "#D91339", false: "#ccc" }}
-                        thumbColor={searchHistory ? "#fff" : "#eee"}
-                    />
                 </View>
-            </View>
 
-            <View style={styles.infoBox}>
-                <Ionicons name="information-circle-outline" size={22} color="#555" />
-                <Text style={styles.infoText}>
-                    You can manage how your data is collected and used. Disabling certain settings may
-                    affect your personalized experience.
-                </Text>
-            </View>
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Search & Browsing</Text>
 
-            <View style={{ height: 80 }} />
-        </ScrollView>
+                    <View style={styles.option}>
+                        <View style={styles.labelContainer}>
+                            <Ionicons name="search-outline" size={22} color="#D91339" />
+                            <Text style={styles.optionText}>Save Search History</Text>
+                        </View>
+                        <Switch
+                            value={searchHistory}
+                            onValueChange={setSearchHistory}
+                            trackColor={{ true: "#D91339", false: "#ccc" }}
+                            thumbColor={searchHistory ? "#fff" : "#eee"}
+                        />
+                    </View>
+                </View>
+
+                <View style={styles.infoBox}>
+                    <Ionicons name="information-circle-outline" size={22} color="#555" />
+                    <Text style={styles.infoText}>
+                        You can manage how your data is collected and used. Disabling certain settings may
+                        affect your personalized experience.
+                    </Text>
+                </View>
+
+                <View style={{ height: 80 }} />
+            </ScrollView>
+        </ThemedView>
     );
 };
 
@@ -94,7 +97,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff",
         paddingHorizontal: 18,
-        paddingTop: 55,
+        paddingTop: 20,
     },
     header: {
         fontSize: 26,

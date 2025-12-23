@@ -1,8 +1,10 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 const TopRated = () => {
+    const router = useRouter();
     const products = [
         { id: 1, image: require("@/assets/images/product-1.png"), name: "Smart Fan", rating: "4.9" },
         { id: 2, image: require("@/assets/images/product-3.png"), name: "Beach Speaker", rating: "4.8" },
@@ -14,8 +16,11 @@ const TopRated = () => {
         <View style={styles.section}>
             <View style={styles.headerRow}>
                 <Text style={styles.title}>Top Rated</Text>
-                <TouchableOpacity activeOpacity={0.7}>
-                    <Text style={styles.viewAll}>View All →</Text>
+                <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => router.push("/products")}
+                >
+                    <Text style={styles.viewAll}>View All</Text>
                 </TouchableOpacity>
             </View>
 

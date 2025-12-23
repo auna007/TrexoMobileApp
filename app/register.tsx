@@ -20,17 +20,16 @@ const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const router = useRouter();
     const { register, registerLoading } = useAuth();
 
     const handleRegister = () => {
         if (!name || !email || !password || !confirmPassword) {
-            Alert.alert("Error", "Please fill all fields");
             return;
         }
-
         if (password !== confirmPassword) {
-            Alert.alert("Error", "Passwords do not match");
             return;
         }
 
@@ -184,6 +183,20 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginBottom: 15,
         color: "#fff",
+    },
+    passwordContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#1F2937",
+        borderRadius: 8,
+        paddingHorizontal: 12,
+        marginBottom: 15,
+    },
+    passwordInput: {
+        flex: 1,
+        color: "#fff",
+        paddingVertical: 12,
+        fontSize: 16,
     },
     button: {
         backgroundColor: "#EF4444",
