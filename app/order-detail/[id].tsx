@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useLocalSearchParams, router } from "expo-router";
 import { Ionicons, Feather } from "@expo/vector-icons";
+import ThemedView from "../components/ThemedView";
 
 const sampleOrders: any = {
     1: {
@@ -52,99 +53,101 @@ const OrderDetail = () => {
     }
 
     return (
-        <View style={styles.container}>
-            <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
-                <Ionicons name="chevron-back" size={24} color="#D91339" />
-            </TouchableOpacity>
-
-            <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
-                <View>
-                    {loadingImage && (
-                        <ActivityIndicator size="large" color="#D91339" style={styles.loader} />
-                    )}
-                    <Image
-                        source={order.image}
-                        style={styles.productImage}
-                        onLoadEnd={() => setLoadingImage(false)}
-                    />
-                </View>
-
-                <View style={styles.section}>
-                    <View style={styles.rowBetween}>
-                        <Text style={styles.productName}>{order.name}</Text>
-                        <Text style={[styles.statusBadge]}>
-                            {order.status}
-                        </Text>
-                    </View>
-                    <Text style={styles.orderAmount}>{order.amount}</Text>
-                    <Text style={styles.subText}>Ordered on {order.date}</Text>
-                </View>
-
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Order Information</Text>
-
-                    <View style={styles.infoRow}>
-                        <Text style={styles.infoLabel}>Order Number</Text>
-                        <Text style={styles.infoValue}>{order.orderNumber}</Text>
-                    </View>
-
-                    <View style={styles.infoRow}>
-                        <Text style={styles.infoLabel}>Payment Method</Text>
-                        <Text style={styles.infoValue}>{order.paymentMethod}</Text>
-                    </View>
-
-                    <View style={styles.infoRow}>
-                        <Text style={styles.infoLabel}>Total Amount</Text>
-                        <Text style={styles.infoValue}>{order.amount}</Text>
-                    </View>
-                </View>
-
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Delivery Information</Text>
-
-                    <View style={styles.infoRow}>
-                        <Text style={styles.infoLabel}>Delivered On</Text>
-                        <Text style={styles.infoValue}>{order.deliveryDate}</Text>
-                    </View>
-
-                    <View style={{ marginTop: 10 }}>
-                        <Text style={styles.infoLabel}>Shipping Address</Text>
-                        <Text style={styles.address}>{order.address}</Text>
-                    </View>
-                </View>
-
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Tracking Timeline</Text>
-
-                    <View style={styles.timelineItem}>
-                        <View style={styles.timelineDot} />
-                        <Text style={styles.timelineText}>Order Placed • {order.date}</Text>
-                    </View>
-
-                    <View style={styles.timelineItem}>
-                        <View style={styles.timelineDot} />
-                        <Text style={styles.timelineText}>Order Shipped</Text>
-                    </View>
-
-                    <View style={styles.timelineItem}>
-                        <View style={styles.timelineDot} />
-                        <Text style={styles.timelineText}>In Transit</Text>
-                    </View>
-
-                    <View style={styles.timelineItem}>
-                        <View style={[styles.timelineDot, { backgroundColor: "#10B981" }]} />
-                        <Text style={styles.timelineText}>
-                            Delivered • {order.deliveryDate}
-                        </Text>
-                    </View>
-                </View>
-
-                <TouchableOpacity style={styles.helpBtn}>
-                    <Feather name="help-circle" size={20} color="#fff" />
-                    <Text style={styles.helpText}>Need Help?</Text>
+        <ThemedView>
+            <View style={styles.container}>
+                <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
+                    <Ionicons name="chevron-back" size={24} color="#D91339" />
                 </TouchableOpacity>
-            </ScrollView>
-        </View>
+
+                <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
+                    <View>
+                        {loadingImage && (
+                            <ActivityIndicator size="large" color="#D91339" style={styles.loader} />
+                        )}
+                        <Image
+                            source={order.image}
+                            style={styles.productImage}
+                            onLoadEnd={() => setLoadingImage(false)}
+                        />
+                    </View>
+
+                    <View style={styles.section}>
+                        <View style={styles.rowBetween}>
+                            <Text style={styles.productName}>{order.name}</Text>
+                            <Text style={[styles.statusBadge]}>
+                                {order.status}
+                            </Text>
+                        </View>
+                        <Text style={styles.orderAmount}>{order.amount}</Text>
+                        <Text style={styles.subText}>Ordered on {order.date}</Text>
+                    </View>
+
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Order Information</Text>
+
+                        <View style={styles.infoRow}>
+                            <Text style={styles.infoLabel}>Order Number</Text>
+                            <Text style={styles.infoValue}>{order.orderNumber}</Text>
+                        </View>
+
+                        <View style={styles.infoRow}>
+                            <Text style={styles.infoLabel}>Payment Method</Text>
+                            <Text style={styles.infoValue}>{order.paymentMethod}</Text>
+                        </View>
+
+                        <View style={styles.infoRow}>
+                            <Text style={styles.infoLabel}>Total Amount</Text>
+                            <Text style={styles.infoValue}>{order.amount}</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Delivery Information</Text>
+
+                        <View style={styles.infoRow}>
+                            <Text style={styles.infoLabel}>Delivered On</Text>
+                            <Text style={styles.infoValue}>{order.deliveryDate}</Text>
+                        </View>
+
+                        <View style={{ marginTop: 10 }}>
+                            <Text style={styles.infoLabel}>Shipping Address</Text>
+                            <Text style={styles.address}>{order.address}</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Tracking Timeline</Text>
+
+                        <View style={styles.timelineItem}>
+                            <View style={styles.timelineDot} />
+                            <Text style={styles.timelineText}>Order Placed • {order.date}</Text>
+                        </View>
+
+                        <View style={styles.timelineItem}>
+                            <View style={styles.timelineDot} />
+                            <Text style={styles.timelineText}>Order Shipped</Text>
+                        </View>
+
+                        <View style={styles.timelineItem}>
+                            <View style={styles.timelineDot} />
+                            <Text style={styles.timelineText}>In Transit</Text>
+                        </View>
+
+                        <View style={styles.timelineItem}>
+                            <View style={[styles.timelineDot, { backgroundColor: "#10B981" }]} />
+                            <Text style={styles.timelineText}>
+                                Delivered • {order.deliveryDate}
+                            </Text>
+                        </View>
+                    </View>
+
+                    <TouchableOpacity style={styles.helpBtn}>
+                        <Feather name="help-circle" size={20} color="#fff" />
+                        <Text style={styles.helpText}>Need Help?</Text>
+                    </TouchableOpacity>
+                </ScrollView>
+            </View>
+        </ThemedView>
     );
 };
 
@@ -154,7 +157,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#FAFAFA",
-        paddingTop: 55,
+        paddingTop: 20,
     },
     backBtn: {
         paddingLeft: 20,

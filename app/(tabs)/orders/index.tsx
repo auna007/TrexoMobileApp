@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Ionicons, MaterialIcons, Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
+import ThemedView from "@/app/components/ThemedView";
 
 import type { ComponentProps } from "react";
 type IoniconName = ComponentProps<typeof Ionicons>["name"];
@@ -59,101 +60,103 @@ const Orders = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.title}>My Orders</Text>
-                <TouchableOpacity style={styles.refreshButton} onPress={onRefresh}>
-                    <Feather name="refresh-cw" size={20} color="#D91339" />
-                </TouchableOpacity>
-            </View>
+        <ThemedView>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Text style={styles.title}>My Orders</Text>
+                    <TouchableOpacity style={styles.refreshButton} onPress={onRefresh}>
+                        <Feather name="refresh-cw" size={20} color="#D91339" />
+                    </TouchableOpacity>
+                </View>
 
-            <View style={styles.tabsWrapper}>
+                <View style={styles.tabsWrapper}>
+                    <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={styles.tabsContainer}
+                    >
+                        {TABS.map((tab) => {
+                            const isActive = selectedTab === tab.key;
+
+                            return (
+                                <TouchableOpacity
+                                    key={tab.key}
+                                    onPress={() => setSelectedTab(tab.key)}
+                                    style={[styles.tab, isActive && styles.activeTab]}
+                                >
+                                    <Ionicons
+                                        name={tab.icon}
+                                        size={18}
+                                        color={isActive ? "#fff" : "#555"}
+                                    />
+                                    <Text style={[styles.tabText, isActive && styles.activeTabText]}>
+                                        {tab.key}
+                                    </Text>
+                                </TouchableOpacity>
+                            );
+                        })}
+                    </ScrollView>
+                </View>
+
                 <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.tabsContainer}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }
+                    contentContainerStyle={{ paddingBottom: 120 }}
                 >
-                    {TABS.map((tab) => {
-                        const isActive = selectedTab === tab.key;
-
-                        return (
-                            <TouchableOpacity
-                                key={tab.key}
-                                onPress={() => setSelectedTab(tab.key)}
-                                style={[styles.tab, isActive && styles.activeTab]}
+                    {filteredOrders.length ? (
+                        filteredOrders.map((order) => (
+                            <Pressable
+                                key={order.id}
+                                style={styles.orderCard}
+                                onPress={() =>
+                                    router.push(`/order-detail/${order.id}`)
+                                }
                             >
-                                <Ionicons
-                                    name={tab.icon}
-                                    size={18}
-                                    color={isActive ? "#fff" : "#555"}
-                                />
-                                <Text style={[styles.tabText, isActive && styles.activeTabText]}>
-                                    {tab.key}
+                                <View style={styles.orderHeader}>
+                                    <Text style={styles.orderName}>{order.name}</Text>
+
+                                    <Text
+                                        style={[
+                                            styles.statusBadge,
+                                            {
+                                                backgroundColor: getStatusColor(order.status) + "22",
+                                                borderColor: getStatusColor(order.status),
+                                            },
+                                        ]}
+                                    >
+                                        {order.status}
+                                    </Text>
+                                </View>
+
+                                <Text style={styles.orderDate}>
+                                    Ordered on {order.date}
                                 </Text>
-                            </TouchableOpacity>
-                        );
-                    })}
+
+                                <View style={styles.orderFooter}>
+                                    <Text style={styles.amount}>{order.amount}</Text>
+
+                                    <TouchableOpacity
+                                        style={styles.detailsBtn}
+                                        onPress={() =>
+                                            router.push(`/order-detail/${order.id}`)
+                                        }
+                                    >
+                                        <MaterialIcons name="receipt-long" size={16} color="#fff" />
+                                        <Text style={styles.detailsText}>Details</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </Pressable>
+                        ))
+                    ) : (
+                        <View style={styles.emptyContainer}>
+                            <Ionicons name="cart-outline" size={60} color="#ccc" />
+                            <Text style={styles.emptyText}>No orders found here</Text>
+                        </View>
+                    )}
                 </ScrollView>
             </View>
-
-            <ScrollView
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                }
-                contentContainerStyle={{ paddingBottom: 120 }}
-            >
-                {filteredOrders.length ? (
-                    filteredOrders.map((order) => (
-                        <Pressable
-                            key={order.id}
-                            style={styles.orderCard}
-                            onPress={() =>
-                                router.push(`/order-detail/${order.id}`)
-                            }
-                        >
-                            <View style={styles.orderHeader}>
-                                <Text style={styles.orderName}>{order.name}</Text>
-
-                                <Text
-                                    style={[
-                                        styles.statusBadge,
-                                        {
-                                            backgroundColor: getStatusColor(order.status) + "22",
-                                            borderColor: getStatusColor(order.status),
-                                        },
-                                    ]}
-                                >
-                                    {order.status}
-                                </Text>
-                            </View>
-
-                            <Text style={styles.orderDate}>
-                                Ordered on {order.date}
-                            </Text>
-
-                            <View style={styles.orderFooter}>
-                                <Text style={styles.amount}>{order.amount}</Text>
-
-                                <TouchableOpacity
-                                    style={styles.detailsBtn}
-                                    onPress={() =>
-                                        router.push(`/order-detail/${order.id}`)
-                                    }
-                                >
-                                    <MaterialIcons name="receipt-long" size={16} color="#fff" />
-                                    <Text style={styles.detailsText}>Details</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </Pressable>
-                    ))
-                ) : (
-                    <View style={styles.emptyContainer}>
-                        <Ionicons name="cart-outline" size={60} color="#ccc" />
-                        <Text style={styles.emptyText}>No orders found here</Text>
-                    </View>
-                )}
-            </ScrollView>
-        </View>
+        </ThemedView>
     );
 };
 
@@ -161,7 +164,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#FAFAFA",
-        paddingTop: 55,
+        paddingTop: 20,
     },
     header: {
         flexDirection: "row",

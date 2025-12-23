@@ -9,6 +9,7 @@ export default function RootLayout() {
                 <Stack.Screen name="home" />
                 <Stack.Screen name="login" />
                 <Stack.Screen name="register" />
+                <Stack.Screen name="verify-otp" />
                 <Stack.Screen name="(tabs)" />
             </Stack>
         </CartProvider>

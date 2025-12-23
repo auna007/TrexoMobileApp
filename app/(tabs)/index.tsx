@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CustomerReviews from "../components/dashboard/CustomerReviews";
 import DealOfTheDay from "../components/dashboard/DealOfTheDay";
 import FlashSales from "../components/dashboard/FlashSales";
@@ -11,7 +10,6 @@ import ThemedView from "../components/ThemedView";
 
 const Dashboard = () => {
     const [greeting, setGreeting] = useState("");
-    const insets = useSafeAreaInsets();
 
     useEffect(() => {
         const hour = new Date().getHours();

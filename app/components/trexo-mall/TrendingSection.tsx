@@ -1,15 +1,27 @@
-import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    ScrollView,
+    Image,
+    ImageSourcePropType
+} from "react-native";
 
-export default function TrendingSection({ trending }: any) {
+type TrendingItem = {
+    id: number;
+    name: string;
+    image: ImageSourcePropType;
+};
+
+export default function TrendingSection({ trending }: { trending: TrendingItem[] }) {
     return (
         <View style={styles.section}>
             <View style={styles.sectionHeader}>
                 <Text style={styles.sectionTitle}>Trending Now 🔥</Text>
-                <Text style={styles.seeAll}>See all</Text>
             </View>
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {trending.map((item: any) => (
+                {trending.map((item) => (
                     <View key={item.id} style={styles.card}>
                         <Image source={item.image} style={styles.image} />
                         <Text style={styles.name}>{item.name}</Text>
@@ -29,7 +41,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     sectionTitle: { fontSize: 18, fontWeight: "bold" },
-    seeAll: { color: "#D91339", fontWeight: "600" },
     card: {
         width: 130,
         marginRight: 10,
