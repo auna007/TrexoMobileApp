@@ -1,4 +1,5 @@
 import { useAuth } from "@/hooks/useAuth";
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
@@ -84,31 +85,49 @@ const Register = () => {
                     value={email}
                     onChangeText={setEmail}
                 />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Password"
-                    placeholderTextColor="#9CA3AF"
-                    secureTextEntry
-                    value={password}
-                    onChangeText={setPassword}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Confirm Password"
-                    placeholderTextColor="#9CA3AF"
-                    secureTextEntry
-                    value={confirmPassword}
-                    onChangeText={setConfirmPassword}
-                />
+                <View style={styles.passwordContainer}>
+                    <TextInput
+                        style={styles.passwordInput}
+                        placeholder="Password"
+                        placeholderTextColor="#9CA3AF"
+                        secureTextEntry={!showPassword}
+                        value={password}
+                        onChangeText={setPassword}
+                    />
+                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                        <Ionicons
+                            name={showPassword ? "eye-off" : "eye"}
+                            size={22}
+                            color="#9CA3AF"
+                        />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.passwordContainer}>
+                    <TextInput
+                        style={styles.passwordInput}
+                        placeholder="Confirm Password"
+                        placeholderTextColor="#9CA3AF"
+                        secureTextEntry={!showConfirmPassword}
+                        value={confirmPassword}
+                        onChangeText={setConfirmPassword}
+                    />
+                    <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+                        <Ionicons
+                            name={showConfirmPassword ? "eye-off" : "eye"}
+                            size={22}
+                            color="#9CA3AF"
+                        />
+                    </TouchableOpacity>
+                </View>
 
                 <TouchableOpacity
-                style={[
-                    styles.button,
-                    registerLoading && styles.buttonDisabled
-                ]}
-                onPress={handleRegister}
-                disabled={registerLoading}
-                activeOpacity={0.8}
+                    style={[
+                        styles.button,
+                        registerLoading && styles.buttonDisabled
+                    ]}
+                    onPress={handleRegister}
+                    disabled={registerLoading}
+                    activeOpacity={0.8}
                 >
                 {registerLoading ? (
                     <ActivityIndicator color="#FFFFFF" size="small" />
