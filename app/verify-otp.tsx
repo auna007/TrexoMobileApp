@@ -113,6 +113,9 @@ export default function VerifyOtpScreen() {
 
         const otpString = otp.join('');
 
+        console.log('Verifying OTP:', otpString);
+        console.log('Verifying OTP lenght:', otpString.length);
+        
         if (otpString.length !== OTP_LENGTH) {
             Alert.alert('Error', 'Please enter the complete 6-digit OTP');
             return;

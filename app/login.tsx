@@ -1,4 +1,5 @@
 import { useAuth } from "@/hooks/useAuth";
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
@@ -19,6 +20,7 @@ import ThemedView from "./components/ThemedView";
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
     const { login, loginLoading } = useAuth();
 
@@ -64,14 +66,23 @@ const Login = () => {
                         value={email}
                         onChangeText={setEmail}
                     />
+                    <View style={styles.passwordContainer}>
                     <TextInput
-                        style={styles.input}
+                        style={styles.passwordInput}
                         placeholder="Password"
                         placeholderTextColor="#9CA3AF"
-                        secureTextEntry
+                        secureTextEntry={!showPassword}
                         value={password}
                         onChangeText={setPassword}
                     />
+                        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                            <Ionicons
+                                name={showPassword ? "eye-off" : "eye"}
+                                size={22}
+                                color="#9CA3AF"
+                            />
+                        </TouchableOpacity>
+                    </View>
 
                 <TouchableOpacity
                 style={[
@@ -164,6 +175,20 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginBottom: 15,
         color: "#fff",
+    },
+    passwordContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#1F2937",
+        borderRadius: 8,
+        paddingHorizontal: 12,
+        marginBottom: 15,
+    },
+    passwordInput: {
+        flex: 1,
+        color: "#fff",
+        paddingVertical: 12,
+        fontSize: 16,
     },
     button: {
         backgroundColor: "#EF4444",

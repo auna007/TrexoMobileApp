@@ -1,8 +1,10 @@
 import React from "react";
-import { Text, StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 
-const SectionTitle = ({ title }: { title: string }) => (
-    <Text style={styles.title}>{title}</Text>
+const SectionTitle = ({ title, showMore = false }: { title: string, showMore?: boolean }) => (
+    <Text style={styles.title}>
+        {title} {showMore ? "›" : ""}
+    </Text>
 );
 
 const styles = StyleSheet.create({

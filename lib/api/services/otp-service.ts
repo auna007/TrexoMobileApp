@@ -20,11 +20,11 @@ export interface ResendOtpResponse {
 
 class OtpService {
   async verifyOtp(data: VerifyOtpData): Promise<VerifyOtpResponse> {
-    return await apiClient.post<VerifyOtpResponse>('/verify-otp', data);
+    return await apiClient.post<VerifyOtpResponse>('/auth/verify-otp', data);
   }
 
   async resendOtp(data: ResendOtpData): Promise<ResendOtpResponse> {
-    return await apiClient.post<ResendOtpResponse>('/resend-otp', data);
+    return await apiClient.post<ResendOtpResponse>('/auth/resend-otp', data);
   }
 }
 
