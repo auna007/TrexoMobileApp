@@ -13,6 +13,16 @@ export const useProducts = (params?: ProductParams) => {
   });
 };
 
+export const useProductDetail = (id: number) => {
+  return useQuery({
+    queryKey: ['product', 'detail', id],
+    queryFn: () => productService.getProductById(id),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    select: (data) => transformProduct(data),
+    enabled: !!id, // Only fetch if id exists
+  });
+};
+
 // Hook for products by type
 export const useProductsByType = (type: Product['type'], limit?: number) => {
   return useQuery({

@@ -27,7 +27,7 @@ export interface ProductImage {
     created_at: string;
     updated_at: string;
     image: string; // Main image URL
-    type: 'new' | 'summer' | 'flash' | 'trending' | string; // Add other types as needed
+    type: 'new' | 'summer' | 'flash' | 'trending' | string;
     quantity: string;
     average_rating: number;
     is_flash_active: boolean;
@@ -75,10 +75,18 @@ export interface ProductImage {
     originalPrice: number;
     image: string;
     type: Product['type'];
-    status: 'New' | 'Trending' | 'Summer' | 'Flash Sale' | 'Limited';
+    status: 'New' | 'Trending' | 'Summer' | 'Flash Sale' | 'Limited' | 'Deal';
     averageRating: number;
     category: string;
+    categoryId: number;
     quantity: number;
     isInStock: boolean;
-    images: string[]; // Array of image URLs
+    images: string[];
+    discount?: number;
+    oldPrice?: string;
+    isFlashSale?: boolean;
+    flashEndTime?: string | null;
+    isFlashActive: boolean;
+    createdAt: string;
+    updatedAt: string;
   }

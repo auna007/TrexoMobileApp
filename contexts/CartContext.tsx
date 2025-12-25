@@ -1,27 +1,30 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
-export type Product = {
-    id: string;
-    image: any;
+interface CartItem {
+    id: number;
     name: string;
-    price: string;
-    quantity?: number;
-};
+    price: number;
+    image: string;
+    quantity: number;
+    maxQuantity?: number;
+    isFlashSale?: boolean;
+    flashEndTime?: string | null;
+  }
 
 type CartContextType = {
-    cart: Product[];
-    addToCart: (product: Product) => void;
-    removeFromCart: (id: string) => void;
+    cart: CartItem[];
+    addToCart: (product: CartItem) => void;
+    removeFromCart: (id: number) => void;
     clearCart: () => void;
-    increaseQuantity: (id: string) => void;
-    decreaseQuantity: (id: string) => void;
+    increaseQuantity: (id: number) => void;
+    decreaseQuantity: (id: number) => void;
 };
 
 const CartContext = createContext<CartContextType | null>(null);
 
 export const CartProvider = ({ children }: any) => {
-    const [cart, setCart] = useState<Product[]>([]);
+    const [cart, setCart] = useState<CartItem[]>([]);
 
     useEffect(() => {
         (async () => {
@@ -34,7 +37,7 @@ export const CartProvider = ({ children }: any) => {
         AsyncStorage.setItem("cart", JSON.stringify(cart));
     }, [cart]);
 
-    const addToCart = (product: Product) => {
+    const addToCart = (product: CartItem) => {
         setCart((prev) => {
             const exists = prev.find((p) => p.id === product.id);
             if (exists) {
@@ -46,19 +49,19 @@ export const CartProvider = ({ children }: any) => {
         });
     };
 
-    const removeFromCart = (id: string) => {
+    const removeFromCart = (id: number) => {
         setCart((prev) => prev.filter((p) => p.id !== id));
     };
 
     const clearCart = () => setCart([]);
 
-    const increaseQuantity = (id: string) => {
+    const increaseQuantity = (id: number) => {
         setCart((prev) =>
             prev.map((p) => (p.id === id ? { ...p, quantity: (p.quantity || 1) + 1 } : p))
         );
     };
 
-    const decreaseQuantity = (id: string) => {
+    const decreaseQuantity = (id: number) => {
         setCart((prev) =>
             prev
                 .map((p) => (p.id === id ? { ...p, quantity: (p.quantity || 1) - 1 } : p))

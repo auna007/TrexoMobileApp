@@ -3,6 +3,7 @@ import {
   useSummerProducts,
   useTrendingProducts
 } from "@/hooks/useProducts";
+import { useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import {
   RefreshControl,
@@ -25,6 +26,7 @@ import ProductSkeleton from "./components/Skeleton/ProductSkeleton";
   
   export default function Home() {
     const [refreshing, setRefreshing] = useState(false);
+    const router = useRouter();
   
     // Use separate hooks for different product types
     const { 
@@ -66,9 +68,10 @@ import ProductSkeleton from "./components/Skeleton/ProductSkeleton";
     }, [refetchNewArrivals, refetchTrending, refetchSummer]);
   
     const handleProductPress = (product: any) => {
-      // Navigate to product detail screen
-      console.log('Product pressed:', product);
-      // router.push(`/products/${product.id}`);
+      router.push({
+        pathname: "/product-detail/[id]",
+        params: { id: product.id.toString() },
+    });
     };
   
     return (

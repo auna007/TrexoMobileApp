@@ -1,22 +1,24 @@
-import React, { useState } from "react";
-import {
-    View,
-    Text,
-    StyleSheet,
-    TouchableOpacity,
-    ScrollView,
-    Alert,
-} from "react-native";
-import { Ionicons, Feather, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
 import ThemedView from "@/app/components/ThemedView";
+import { authStore } from "@/lib/store/auth-store";
+import { Feather, FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import React from "react";
+import {
+    Alert,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 
 const Profile = () => {
     const router = useRouter();
-    const [user] = useState({
-        name: "Ayomide Johnson",
-        email: "ayomide.johnson@example.com",
-    });
+    // const [user] = useState({
+    //     name: "Ayomide Johnson",
+    //     email: "ayomide.johnson@example.com",
+    // });
+    const user = authStore.getState().user;
 
     const handleLogout = () => {
         Alert.alert("Logout", "Are you sure you want to log out?", [
@@ -40,8 +42,8 @@ const Profile = () => {
                         <Ionicons name="person-circle-outline" size={70} color="#D91339" />
                     </View>
                     <View style={styles.userInfo}>
-                        <Text style={styles.name}>{user.name}</Text>
-                        <Text style={styles.email}>{user.email}</Text>
+                        <Text style={styles.name}>{user?.name}</Text>
+                        <Text style={styles.email}>{user?.email}</Text>
                     </View>
                 </View>
 
